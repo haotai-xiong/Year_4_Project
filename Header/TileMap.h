@@ -12,12 +12,12 @@ public:
 	void setTile(int t_x, int t_y, TileType t_type);
 	void render(sf::RenderWindow& t_window);
 
-    void addHouse(const sf::Vector2f& position) {
-        m_buildings.push_back(std::make_unique<House>(position));
+    void addHouse(const sf::Vector2f& t_pos) {
+        m_buildings.push_back(std::make_unique<House>(worldToTileCoordPos(t_pos)));
     }
 
-    void addFactory(const sf::Vector2f& position) {
-        m_buildings.push_back(std::make_unique<Factory>(position));
+    void addFactory(const sf::Vector2f& t_pos) {
+        m_buildings.push_back(std::make_unique<Factory>(worldToTileCoordPos(t_pos)));
     }
 
     // Render all buildings
