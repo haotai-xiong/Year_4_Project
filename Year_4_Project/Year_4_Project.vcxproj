@@ -77,6 +77,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SFML_SDK)/include;../Header;../Source;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,6 +108,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SFML_SDK)/include;../Header;../Source;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,19 +133,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Header\Buildings.h" />
     <ClInclude Include="..\Header\Game.h" />
     <ClInclude Include="..\Header\Globals.h" />
+    <ClInclude Include="..\Header\TextureManager.h" />
     <ClInclude Include="..\Header\Tile.h" />
     <ClInclude Include="..\Header\TileMap.h" />
     <ClInclude Include="..\Header\TileType.h" />
+    <ClInclude Include="..\Header\UIPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Game.cpp" />
-    <ClCompile Include="..\Source\Globals.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />
     <ClCompile Include="..\Source\TileMap.cpp" />
-    <ClCompile Include="..\Source\TileType.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

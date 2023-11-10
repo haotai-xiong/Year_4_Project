@@ -64,6 +64,7 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		m_uiPanel.processEvent(newEvent, m_window, m_testMap);
 	}
 }
 
@@ -86,6 +87,8 @@ void Game::processKeys(sf::Event t_event)
 /// <param name="t_deltaTime">time interval per frame</param>
 void Game::update(sf::Time t_deltaTime)
 {
+	m_uiPanel.update(m_window);
+
 	if (m_exitGame)
 	{
 		m_window.close();
@@ -100,6 +103,7 @@ void Game::render()
 	m_window.clear(sf::Color::Black);
 
 	m_testMap.render(m_window);
+	m_uiPanel.render(m_window);
 
 	m_window.display();
 }

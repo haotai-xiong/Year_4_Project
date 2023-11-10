@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "TileMap.h"
+#include "UIPanel.h"
 
 class Game
 {
@@ -24,6 +25,7 @@ private:
 	bool m_exitGame; // control exiting game
 
 	TileMap m_testMap;
+	UIPanel m_uiPanel;
 };
 
 #endif // !GAME_HPP

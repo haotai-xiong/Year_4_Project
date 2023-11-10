@@ -15,6 +15,8 @@ TileMap::TileMap() {
 
 		tiles[randY][randX].setType(TileType::NonTraversable);
 	}
+
+	addHouse(sf::Vector2f(500.0f, 500.0f));
 }
 
 Tile* TileMap::getTile(int t_x, int t_y) {
@@ -37,4 +39,5 @@ void TileMap::render(sf::RenderWindow& t_window)
 			tiles[y][x].render(t_window);
 		}
 	}
+	renderBuildings(t_window);
 }
