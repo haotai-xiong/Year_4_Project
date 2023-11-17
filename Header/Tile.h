@@ -5,15 +5,16 @@
 
 class Tile {
 public:
-	Tile(int t_x, int t_y, TileType t_type);
-	int getX() const;
-	int getY() const;
+	Tile(sf::Vector2i t_pos, TileType t_type);
+	// int getX() const;
+	// int getY() const;
+	sf::Vector2i getPos();
 	TileType getType() const;
 	void setType(TileType t_type);
 	void render(sf::RenderWindow& t_window);
 
 private:
-	int m_x, m_y; // X & Y index
+	sf::Vector2i m_pos; // X & Y index
 	TileType m_type;
 	sf::RectangleShape m_rect;
 };
