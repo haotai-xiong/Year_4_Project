@@ -6,8 +6,6 @@
 class Tile {
 public:
 	Tile(sf::Vector2i t_pos, TileType t_type);
-	// int getX() const;
-	// int getY() const;
 	sf::Vector2i getPos();
 	TileType getType() const;
 	void setType(TileType t_type);

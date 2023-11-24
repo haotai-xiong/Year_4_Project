@@ -5,7 +5,7 @@
 
 class Building {
 public:
-    Building(const sf::Vector2f& t_pos) : m_pos(t_pos) {}
+    Building(const sf::Vector2f& t_pos, std::string t_textureName) : m_pos(t_pos) {}
 
     virtual ~Building() {}
 
@@ -29,8 +29,8 @@ protected:
 
 class House : public Building {
 public:
-    House(const sf::Vector2f& t_pos) : Building(t_pos) {
-        m_sprite.setTexture(m_textureManager.getTexture("house"));
+    House(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
+        m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize();
         m_sprite.setPosition(m_pos);
     }
@@ -38,53 +38,39 @@ public:
 
 class Factory : public Building {
 public:
-    Factory(const sf::Vector2f& t_pos) : Building(t_pos) {
-        m_sprite.setTexture(m_textureManager.getTexture("factory"));
+    Factory(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
+        m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize();
         m_sprite.setPosition(m_pos);
     }
-};
 
-class MidConnection : public Building {
-public:
-    MidConnection(const sf::Vector2f& t_pos) : Building(t_pos) {
-        m_sprite.setTexture(m_textureManager.getTexture("middle"));
-        resizeToTileSize();
-        m_sprite.setPosition(m_pos);
+    void connectToWood() {
+        hasWoodConnection = true;
     }
-};
 
-class TopLeftConnection : public Building {
-public:
-    TopLeftConnection(const sf::Vector2f& t_pos) : Building(t_pos) {
-        m_sprite.setTexture(m_textureManager.getTexture("top left"));
-        resizeToTileSize();
-        m_sprite.setPosition(m_pos);
+    void disconnectWood() {
+        hasWoodConnection = false;
     }
-};
 
-class TopRightConnection : public Building {
-public:
-    TopRightConnection(const sf::Vector2f& t_pos) : Building(t_pos) {
-        m_sprite.setTexture(m_textureManager.getTexture("top right"));
-        resizeToTileSize();
-        m_sprite.setPosition(m_pos);
+    void updateWoodCollection() {
+        if (hasWoodConnection) {
+            woodAmount += woodCollectionRate;
+        }
+
+        if (0 == woodAmount % 50) {
+            std::cout << "Wood Amount " << woodAmount << std::endl;
+        }
     }
+
+private:
+    bool hasWoodConnection = false;
+    static constexpr int woodCollectionRate = 1;
 };
 
-class BottomLeftConnection : public Building {
+class Connection : public Building {
 public:
-    BottomLeftConnection(const sf::Vector2f& t_pos) : Building(t_pos) {
-        m_sprite.setTexture(m_textureManager.getTexture("bottom left"));
-        resizeToTileSize();
-        m_sprite.setPosition(m_pos);
-    }
-};
-
-class BottomRightConnection : public Building {
-public:
-    BottomRightConnection(const sf::Vector2f& t_pos) : Building(t_pos) {
-        m_sprite.setTexture(m_textureManager.getTexture("bottom right"));
+    Connection(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
+        m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize();
         m_sprite.setPosition(m_pos);
     }

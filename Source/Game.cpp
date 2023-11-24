@@ -88,6 +88,7 @@ void Game::processKeys(sf::Event t_event)
 void Game::update(sf::Time t_deltaTime)
 {
 	m_uiPanel.update(m_window);
+	m_testMap.update();
 
 	if (m_exitGame)
 	{

@@ -17,4 +17,20 @@ inline sf::Vector2f worldToTileCoordPos(const sf::Vector2f& t_point) {
     return sf::Vector2f(tileX * TILE_SIZE, tileY * TILE_SIZE);
 }
 
+inline sf::Vector2i worldToTileCoordIndex(const sf::Vector2f& t_point) {
+    int tileX = static_cast<int>(t_point.x) / TILE_SIZE;
+    int tileY = static_cast<int>(t_point.y) / TILE_SIZE;
+
+    return sf::Vector2i(tileX, tileY);
+}
+
+inline const std::vector<sf::Vector2i> directions = {
+        sf::Vector2i(0, -1),  // up
+        sf::Vector2i(0, 1),   // down
+        sf::Vector2i(-1, 0),  // left
+        sf::Vector2i(1, 0)    // right
+};
+
+inline int woodAmount = 0;
+
 #endif // !GLOBALS_HPP

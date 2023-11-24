@@ -2,6 +2,7 @@
 #define TEXTUREMANAGER_H
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -15,6 +16,7 @@ public:
         loadTexture("factory", "../Assets/Project/red.png");
         // connections
         loadTexture("middle", "../Assets/Project/Connection/middle.png");
+        loadTexture("middle2", "../Assets/Project/Connection/middle2.png");
         loadTexture("top left", "../Assets/Project/Connection/top_left.png");
         loadTexture("top right", "../Assets/Project/Connection/top_right.png");
         loadTexture("bottom left", "../Assets/Project/Connection/bottom_left.png");

@@ -8,12 +8,14 @@ enum class TileType {
 	Traversable,
 	NonTraversable,
 	House,
-	Factory
+	Factory,
+	Wood,
+	Connection
 };
 
 inline std::unordered_map<TileType, sf::Color> tileTypeToColor = {
 	{TileType::Traversable, TraversableColor},
-	{TileType::NonTraversable, NonTraversableColor}
+	{TileType::Wood, NonTraversableColor}
 };
 
 #endif

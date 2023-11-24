@@ -13,10 +13,8 @@ TileMap::TileMap() {
 		int randX = rand() % width_Num;
 		int randY = rand() % height_Num;
 
-		tiles[randY][randX].setType(TileType::NonTraversable);
+		tiles[randY][randX].setType(TileType::Wood);
 	}
-
-	addHouse(sf::Vector2f(500.0f, 500.0f));
 }
 
 Tile* TileMap::getTile(sf::Vector2i t_pos) {
@@ -32,6 +30,17 @@ void TileMap::setTile(sf::Vector2i t_pos, TileType t_type) {
 	}
 }
 
+void TileMap::update() {
+	// updateWoodConnections();
+
+	for (auto& building : m_buildings) {
+		auto* factory = dynamic_cast<Factory*>(building.get());
+		if (factory) {
+			factory->updateWoodCollection();
+		}
+	}
+}
+
 void TileMap::render(sf::RenderWindow& t_window)
 {
 	for (int y = 0; y < height_Num; y++) {
@@ -40,4 +49,36 @@ void TileMap::render(sf::RenderWindow& t_window)
 		}
 	}
 	renderBuildings(t_window);
+}
+
+void TileMap::updateWoodConnections() {
+	for (auto& building : m_buildings) {
+		auto* factory = dynamic_cast<Factory*>(building.get());
+		if (factory) {
+			if (isConnectedToWood(worldToTileCoordIndex(factory->pos()), sf::Vector2i(0, 0))) {
+				factory->connectToWood();
+			}
+			else {
+				factory->disconnectWood();
+			}
+		}
+	}
+}
+
+bool TileMap::isConnectedToWood(const sf::Vector2i& t_pos, const sf::Vector2i t_previousConnection) {
+	for (const auto& dir : directions) {
+		if (dir == t_previousConnection) {
+			continue;
+		}
+
+		sf::Vector2i checkPos = t_pos + dir;
+		Tile* tile = getTile(checkPos);
+		if (tile && tile->getType() == TileType::Wood) {
+			return true;
+		}
+		else if (tile && tile->getType() == TileType::Connection) {
+			isConnectedToWood(checkPos, -dir);
+		}
+	}
+	return false;
 }
