@@ -11,6 +11,7 @@ enum class TileType {
 	Factory,
 	RecyclingCenter,
 	Landfill,
+	Plant,
 	Wood,
 	Connection
 };

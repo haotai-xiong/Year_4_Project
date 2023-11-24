@@ -85,6 +85,15 @@ public:
     }
 };
 
+class Plant : public Building {
+public:
+    Plant(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
+        m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
+        resizeToTileSize();
+        m_sprite.setPosition(m_pos);
+    }
+};
+
 class Connection : public Building {
 public:
     Connection(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
