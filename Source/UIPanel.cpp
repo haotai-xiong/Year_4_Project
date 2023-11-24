@@ -43,6 +43,9 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
                 else if (selectedOption == UIPanel::BuildingOption::RecyclingCenter) {
                     t_map.addBuilding<RecyclingCenter>(worldPos, TileType::RecyclingCenter, "recycling center");
                 }
+                else if (selectedOption == UIPanel::BuildingOption::Landfill) {
+                    t_map.addBuilding<Landfill>(worldPos, TileType::Landfill, "landfill");
+                }
                 else if (selectedOption == UIPanel::BuildingOption::Middle) {
                     t_map.addBuilding<Connection>(worldPos, TileType::Connection, "middle");
                 }

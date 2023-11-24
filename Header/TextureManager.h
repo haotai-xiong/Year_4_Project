@@ -15,6 +15,7 @@ public:
         loadTexture("house", "../Assets/Project/wood.png");
         loadTexture("factory", "../Assets/Project/red.png");
         loadTexture("recycling center", "../Assets/Project/Recycling Center.png");
+        loadTexture("landfill", "../Assets/Project/Landfill.png");
         // connections
         loadTexture("middle", "../Assets/Project/Connection/middle.png");
         loadTexture("middle2", "../Assets/Project/Connection/middle2.png");

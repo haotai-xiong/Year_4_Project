@@ -10,6 +10,7 @@ enum class TileType {
 	House,
 	Factory,
 	RecyclingCenter,
+	Landfill,
 	Wood,
 	Connection
 };
