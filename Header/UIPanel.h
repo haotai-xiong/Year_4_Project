@@ -9,6 +9,7 @@ public:
         None,
         House,
         Factory,
+        RecyclingCenter,
         Middle,
         Middle2,
         TopLeft,
@@ -57,6 +58,7 @@ private:
     std::vector<ButtonData> buttonConfigs = {
         {"house", sf::Vector2f(10.0f, 20.0f), BuildingOption::House},
         {"factory", sf::Vector2f(10.0f, 70.0f), BuildingOption::Factory},
+        {"recycling center", sf::Vector2f(60.0f, 20.0f), BuildingOption::RecyclingCenter},
         {"middle", sf::Vector2f(10.0f, 120.0f), BuildingOption::Middle},
         {"middle2", sf::Vector2f(60.0f, 120.0f), BuildingOption::Middle2},
         {"top left", sf::Vector2f(10.0f, 170.0f), BuildingOption::TopLeft},

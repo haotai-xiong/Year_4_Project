@@ -9,6 +9,7 @@ enum class TileType {
 	NonTraversable,
 	House,
 	Factory,
+	RecyclingCenter,
 	Wood,
 	Connection
 };
