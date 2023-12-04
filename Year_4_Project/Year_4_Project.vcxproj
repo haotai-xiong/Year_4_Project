@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Buildings.h" />
+    <ClInclude Include="..\Header\Enemy.h" />
     <ClInclude Include="..\Header\Game.h" />
     <ClInclude Include="..\Header\Globals.h" />
     <ClInclude Include="..\Header\TextureManager.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="..\Header\UIPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Enemy.cpp" />
     <ClCompile Include="..\Source\Game.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />

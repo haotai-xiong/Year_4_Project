@@ -18,6 +18,8 @@ public:
         loadTexture("landfill", "../Assets/Project/Building/Landfill.png");
         loadTexture("plant", "../Assets/Project/Building/plant.png");
         loadTexture("tower", "../Assets/Project/Building/tower3.png");
+        // enemy
+        loadTexture("Enemy_Sample", "../Assets/Project/Character/enemy_sample.png");
         // fonts
         loadFont("cheril", "../Assets/Project/Font/CHERL.TTF");
         loadFont("cherii", "../Assets/Project/Font/CHERI.TTF");

@@ -11,12 +11,6 @@ public:
 
     sf::Vector2f pos() const { return m_pos; }
     void pos(sf::Vector2f& t_pos) { m_pos = std::move(t_pos); }
-    
-    void resizeToTileSize() {
-        float scaleX = static_cast<float>(TILE_SIZE) / m_sprite.getLocalBounds().width;
-        float scaleY = static_cast<float>(TILE_SIZE) / m_sprite.getLocalBounds().height;
-        m_sprite.setScale(scaleX, scaleY);
-    }
 
     virtual void render(sf::RenderWindow& t_window) const {
         t_window.draw(m_sprite);
@@ -31,7 +25,7 @@ class House : public Building {
 public:
     House(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
-        resizeToTileSize();
+        resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
     }
 };
@@ -40,7 +34,7 @@ class Factory : public Building {
 public:
     Factory(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
-        resizeToTileSize();
+        resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
     }
 
@@ -74,7 +68,7 @@ class Landfill : public Building {
 public:
     Landfill(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
-        resizeToTileSize();
+        resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
     }
 
@@ -112,7 +106,7 @@ class RecyclingCenter : public Building {
 public:
     RecyclingCenter(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
-        resizeToTileSize();
+        resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
     }
 };
@@ -121,7 +115,7 @@ class Plant : public Building {
 public:
     Plant(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
-        resizeToTileSize();
+        resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
     }
 };
@@ -130,7 +124,7 @@ class Connection : public Building {
 public:
     Connection(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
-        resizeToTileSize();
+        resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
     }
 };
@@ -139,7 +133,7 @@ class Tower : public Building {
 public:
     Tower(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
-        resizeToTileSize();
+        resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
     }
 };

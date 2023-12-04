@@ -24,12 +24,23 @@ inline sf::Vector2i worldToTileCoordIndex(const sf::Vector2f& t_point) {
     return sf::Vector2i(tileX, tileY);
 }
 
+inline void resizeToTileSize(sf::Sprite& t_sprite) {
+    float scaleX = static_cast<float>(TILE_SIZE) / t_sprite.getLocalBounds().width;
+    float scaleY = static_cast<float>(TILE_SIZE) / t_sprite.getLocalBounds().height;
+    t_sprite.setScale(scaleX, scaleY);
+}
+
 inline const std::vector<sf::Vector2i> directions = {
         sf::Vector2i(0, -1),  // up
         sf::Vector2i(0, 1),   // down
         sf::Vector2i(-1, 0),  // left
         sf::Vector2i(1, 0)    // right
 };
+
+inline float distance(const sf::Vector2f& t_left, const sf::Vector2f& t_right) {
+    sf::Vector2f delta = t_left - t_right;
+    return std::sqrt(delta.x * delta.x + delta.y * delta.y);
+}
 
 inline int woodAmount = 0;
 inline int metalAmount = 0;

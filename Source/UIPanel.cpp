@@ -5,8 +5,8 @@ void UIPanel::update(const sf::RenderWindow& t_window) {
     m_hovered = panelShape.getGlobalBounds().contains(mousePos);
     float targetX = hovered() ? screenSize.x - width : screenSize.x - width / 10.0f;
     float panelX = panelShape.getPosition().x;
-    float speed = 10.0f;
-    panelX += (targetX - panelX) / speed;
+    float m_speed = 10.0f;
+    panelX += (targetX - panelX) / m_speed;
     panelShape.setPosition(sf::Vector2f(panelX, screenSize.y - height));
 
     for (const auto& config : buttonConfigs) {
