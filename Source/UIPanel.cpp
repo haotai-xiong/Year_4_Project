@@ -24,7 +24,6 @@ void UIPanel::render(sf::RenderWindow& t_window) {
 }
 
 void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map) {
-
     if (sf::Event::MouseButtonPressed == t_event.type) {
         sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(t_window));
         if (hovered()) {
@@ -48,24 +47,6 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
                 }
                 else if (selectedOption == UIPanel::BuildingOption::Plant) {
                     t_map.addBuilding<Plant>(worldPos, TileType::Plant, "plant");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::Middle) {
-                    t_map.addBuilding<Connection>(worldPos, TileType::Connection, "middle");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::Middle2) {
-                    t_map.addBuilding<Connection>(worldPos, TileType::Connection, "middle2");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::TopLeft) {
-                    t_map.addBuilding<Connection>(worldPos, TileType::Connection, "top left");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::TopRight) {
-                    t_map.addBuilding<Connection>(worldPos, TileType::Connection, "top right");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::BotLeft) {
-                    t_map.addBuilding<Connection>(worldPos, TileType::Connection, "bottom left");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::BotRight) {
-                    t_map.addBuilding<Connection>(worldPos, TileType::Connection, "bottom right");
                 }
                 t_map.updateWoodConnections();
                 // Reset the selection after placing a building

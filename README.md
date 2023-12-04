@@ -163,7 +163,7 @@ Goal tracking and unlocking features will be custom-coded.
 
 2. **Factory**
     - **Description**: Produces woods and metal for the city.
-    - **Mechanics**: Consumes Wood and Metal, produces Waste and Energy.
+    - **Mechanics**: Produces woods, metal, Waste and Energy.
     - **Effects**: Increases pollution levels.
     - **Function**: Essential for economic growth but increases pollution.
 
@@ -182,7 +182,7 @@ Goal tracking and unlocking features will be custom-coded.
 
 2. **Clean Energy Plant**
     - **Description**: Produces energy without adding pollution.
-    - **Mechanics**: Consumes resources to produce clean energy.
+    - **Mechanics**: Consumes recycled material to produce clean energy.
     - **Effects**: Powers the city without increasing pollution.
 
 ### Mechanics

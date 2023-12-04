@@ -52,7 +52,7 @@ public:
         hasWoodConnection = false;
     }
 
-    void updateWoodCollection() {
+    void updateWoodCollection() const {
         if (hasWoodConnection) {
             woodAmount += woodCollectionRate;
         }

@@ -31,8 +31,6 @@ void TileMap::setTile(sf::Vector2i t_pos, TileType t_type) {
 }
 
 void TileMap::update() {
-	// updateWoodConnections();
-
 	for (auto& building : m_buildings) {
 		auto* factory = dynamic_cast<Factory*>(building.get());
 		if (factory) {
@@ -55,7 +53,7 @@ void TileMap::updateWoodConnections() {
 	for (auto& building : m_buildings) {
 		auto* factory = dynamic_cast<Factory*>(building.get());
 		if (factory) {
-			if (isConnectedToWood(worldToTileCoordIndex(factory->pos()), sf::Vector2i(0, 0))) {
+			if (isConnectedToWood(worldToTileCoordIndex(factory->pos()))) {
 				factory->connectToWood();
 			}
 			else {
@@ -65,19 +63,13 @@ void TileMap::updateWoodConnections() {
 	}
 }
 
-bool TileMap::isConnectedToWood(const sf::Vector2i& t_pos, const sf::Vector2i t_previousConnection) {
+bool TileMap::isConnectedToWood(const sf::Vector2i& t_pos) {
 	for (const auto& dir : directions) {
-		if (dir == t_previousConnection) {
-			continue;
-		}
 
 		sf::Vector2i checkPos = t_pos + dir;
 		Tile* tile = getTile(checkPos);
 		if (tile && tile->getType() == TileType::Wood) {
 			return true;
-		}
-		else if (tile && tile->getType() == TileType::Connection) {
-			isConnectedToWood(checkPos, -dir);
 		}
 	}
 	return false;

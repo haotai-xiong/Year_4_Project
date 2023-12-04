@@ -28,7 +28,7 @@ public:
     void updateWoodConnections();
 
 private:
-    bool isConnectedToWood(const sf::Vector2i& t_pos, const sf::Vector2i t_previousConnection);
+    bool isConnectedToWood(const sf::Vector2i& t_pos);
 
 	std::vector<std::vector<Tile>> tiles;
 	int width_Num = SCREEN_WIDTH / TILE_SIZE;

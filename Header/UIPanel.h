@@ -12,12 +12,6 @@ public:
         RecyclingCenter,
         Landfill,
         Plant,
-        Middle,
-        Middle2,
-        TopLeft,
-        TopRight,
-        BotLeft,
-        BotRight
     } selectedOption = BuildingOption::None;
 
     struct ButtonData {
@@ -63,13 +57,6 @@ private:
         {"recycling center", sf::Vector2f(60.0f, 20.0f), BuildingOption::RecyclingCenter},
         {"landfill", sf::Vector2f(60.0f, 70.0f), BuildingOption::Landfill},
         {"plant", sf::Vector2f(110.0f, 20.0f), BuildingOption::Plant},
-        {"middle", sf::Vector2f(10.0f, 120.0f), BuildingOption::Middle},
-        {"middle2", sf::Vector2f(60.0f, 120.0f), BuildingOption::Middle2},
-        {"top left", sf::Vector2f(10.0f, 170.0f), BuildingOption::TopLeft},
-        {"top right", sf::Vector2f(60.0f, 170.0f), BuildingOption::TopRight},
-        {"bottom left", sf::Vector2f(10.0f, 220.0f), BuildingOption::BotLeft},
-        {"bottom right", sf::Vector2f(60.0f, 220.0f), BuildingOption::BotRight}
-
     };
 };
 
