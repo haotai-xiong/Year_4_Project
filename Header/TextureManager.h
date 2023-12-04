@@ -12,33 +12,41 @@ class TextureManager {
 public:
     TextureManager() {
         // buildings
-        loadTexture("house", "../Assets/Project/wood.png");
-        loadTexture("factory", "../Assets/Project/red.png");
-        loadTexture("recycling center", "../Assets/Project/Recycling Center.png");
-        loadTexture("landfill", "../Assets/Project/Landfill.png");
-        loadTexture("plant", "../Assets/Project/plant.png");
-        // connections
-        loadTexture("middle", "../Assets/Project/Connection/middle.png");
-        loadTexture("middle2", "../Assets/Project/Connection/middle2.png");
-        loadTexture("top left", "../Assets/Project/Connection/top_left.png");
-        loadTexture("top right", "../Assets/Project/Connection/top_right.png");
-        loadTexture("bottom left", "../Assets/Project/Connection/bottom_left.png");
-        loadTexture("bottom right", "../Assets/Project/Connection/bottom_right.png");
+        loadTexture("house", "../Assets/Project/Building/wood.png");
+        loadTexture("factory", "../Assets/Project/Building/red.png");
+        loadTexture("recycling center", "../Assets/Project/Building/Recycling Center.png");
+        loadTexture("landfill", "../Assets/Project/Building/Landfill.png");
+        loadTexture("plant", "../Assets/Project/Building/plant.png");
+        loadTexture("tower", "../Assets/Project/Building/tower3.png");
+        // fonts
+        loadFont("cheril", "../Assets/Project/Font/CHERL.TTF");
+        loadFont("cherii", "../Assets/Project/Font/CHERI.TTF");
     }
     ~TextureManager() {}
 
-    void loadTexture(const std::string name, const std::string filename) {
+    void loadTexture(const std::string t_name, const std::string t_filename) {
         sf::Texture texture;
-        texture.loadFromFile(filename);
-        textures[name] = texture;
+        texture.loadFromFile(t_filename);
+        textures[t_name] = texture;
     }
 
-    sf::Texture& getTexture(const std::string name) {
-        return textures.at(name);
+    void loadFont(const std::string t_name, const std::string t_filename) {
+        sf::Font font;
+        font.loadFromFile(t_filename);
+        fonts[t_name] = font;
+    }
+
+    sf::Texture& getTexture(const std::string t_name) {
+        return textures.at(t_name);
+    }
+
+    sf::Font& getFont(const std::string t_name) {
+        return fonts.at(t_name);
     }
 
 private:
     std::unordered_map<std::string, sf::Texture> textures;
+    std::unordered_map<std::string, sf::Font> fonts;
 };
 
 #endif // TEXTURE_MANAGER_H

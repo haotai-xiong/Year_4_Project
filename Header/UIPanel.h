@@ -12,6 +12,7 @@ public:
         RecyclingCenter,
         Landfill,
         Plant,
+        Tower
     } selectedOption = BuildingOption::None;
 
     struct ButtonData {
@@ -50,13 +51,15 @@ private:
     bool m_hovered;
 
     std::unordered_map<BuildingOption, sf::RectangleShape> buttons;
+    std::unordered_map<BuildingOption, sf::Text> texts;
 
     std::vector<ButtonData> buttonConfigs = {
         {"house", sf::Vector2f(10.0f, 20.0f), BuildingOption::House},
-        {"factory", sf::Vector2f(10.0f, 70.0f), BuildingOption::Factory},
-        {"recycling center", sf::Vector2f(60.0f, 20.0f), BuildingOption::RecyclingCenter},
-        {"landfill", sf::Vector2f(60.0f, 70.0f), BuildingOption::Landfill},
-        {"plant", sf::Vector2f(110.0f, 20.0f), BuildingOption::Plant},
+        {"factory", sf::Vector2f(10.0f, 80.0f), BuildingOption::Factory},
+        {"landfill", sf::Vector2f(10.0f, 140.0f), BuildingOption::Landfill},
+        {"recycling center", sf::Vector2f(10.0f, 200.0f), BuildingOption::RecyclingCenter},
+        {"plant", sf::Vector2f(10.0f, 260.0f), BuildingOption::Plant},
+        {"tower", sf::Vector2f(10.0f, 320.0f), BuildingOption::Tower},
     };
 };
 

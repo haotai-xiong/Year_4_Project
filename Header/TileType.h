@@ -13,6 +13,7 @@ enum class TileType {
 	Landfill,
 	Plant,
 	Wood,
+	Tower,
 	Connection
 };
 

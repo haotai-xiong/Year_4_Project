@@ -36,6 +36,12 @@ void TileMap::update() {
 		if (factory) {
 			factory->updateWoodCollection();
 		}
+
+		auto* landfill = dynamic_cast<Landfill*>(building.get());
+		if (landfill) {
+			landfill->woodToEnergy();
+			landfill->metalToEnergy();
+		}
 	}
 }
 

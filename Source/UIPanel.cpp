@@ -12,6 +12,9 @@ void UIPanel::update(const sf::RenderWindow& t_window) {
     for (const auto& config : buttonConfigs) {
         auto& button = buttons[config.m_option];
         button.setPosition(panelShape.getPosition() + config.m_positionOffset);
+
+        auto& text = texts[config.m_option];
+        text.setPosition(panelShape.getPosition() + config.m_positionOffset + sf::Vector2f(0.0f, 40.0f));
     }
 }
 
@@ -20,6 +23,10 @@ void UIPanel::render(sf::RenderWindow& t_window) {
 
     for (const auto& [option, button] : buttons) {
         t_window.draw(button);
+    }
+
+    for (const auto& [option, text] : texts) {
+        t_window.draw(text);
     }
 }
 
@@ -48,6 +55,9 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
                 else if (selectedOption == UIPanel::BuildingOption::Plant) {
                     t_map.addBuilding<Plant>(worldPos, TileType::Plant, "plant");
                 }
+                else if (selectedOption == UIPanel::BuildingOption::Tower) {
+                    t_map.addBuilding<Plant>(worldPos, TileType::Tower, "tower");
+                }
                 t_map.updateWoodConnections();
                 // Reset the selection after placing a building
                 resetSelection();
@@ -70,5 +80,12 @@ void UIPanel::buttonSetup() {
         button.setSize(sf::Vector2f(width / UI_SHRINK_WIDTH, TILE_SIZE));
         button.setTexture(&m_textureManager.getTexture(config.m_textureName));
         buttons[config.m_option] = button;
+
+        sf::Text text;
+        text.setFont(m_textureManager.getFont("cherii"));
+        text.setFillColor(sf::Color::Black);
+        text.setCharacterSize(15.0f);
+        text.setString(config.m_textureName);
+        texts[config.m_option] = text;
     }
 }

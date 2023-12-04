@@ -32,5 +32,9 @@ inline const std::vector<sf::Vector2i> directions = {
 };
 
 inline int woodAmount = 0;
+inline int metalAmount = 0;
+inline int energyAmount = 0;
+inline int wasteAmount = 0;
+inline int prosperity = 0;
 
 #endif // !GLOBALS_HPP
