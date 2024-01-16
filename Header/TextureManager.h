@@ -12,12 +12,13 @@ class TextureManager {
 public:
     TextureManager() {
         // buildings
-        loadTexture("house", "../Assets/Project/Building/wood.png");
+        loadTexture("house", "../Assets/Project/Building/brown.png");
         loadTexture("factory", "../Assets/Project/Building/red.png");
         loadTexture("recycling center", "../Assets/Project/Building/Recycling Center.png");
         loadTexture("landfill", "../Assets/Project/Building/Landfill.png");
         loadTexture("plant", "../Assets/Project/Building/plant.png");
         loadTexture("tower", "../Assets/Project/Building/tower3.png");
+        loadTexture("wood", "../Assets/Project/Building/wood.png");
         // enemy
         loadTexture("Enemy_Sample", "../Assets/Project/Character/enemy_sample.png");
         // fonts

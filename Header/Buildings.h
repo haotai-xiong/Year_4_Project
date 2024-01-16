@@ -52,7 +52,7 @@ public:
             wasteAmount += wasteGenerateRate;
         }
 
-        if (0 == woodAmount % 200) {
+        if (0 == woodAmount % 200 && 0 != woodAmount) {
             std::cout << "Wood Amount " << woodAmount << std::endl;
             std::cout << "Waste Amount " << wasteAmount << std::endl;
         }

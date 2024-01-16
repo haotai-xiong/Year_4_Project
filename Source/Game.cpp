@@ -89,6 +89,7 @@ void Game::update(sf::Time t_deltaTime)
 {
 	m_uiPanel.update(m_window);
 	m_testMap.update();
+	m_testEnemy.update(m_testMap.getBuildings());
 
 	if (m_exitGame)
 	{
@@ -105,6 +106,7 @@ void Game::render()
 
 	m_testMap.render(m_window);
 	m_uiPanel.render(m_window);
+	m_testEnemy.render(m_window);
 
 	m_window.display();
 }

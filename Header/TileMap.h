@@ -25,7 +25,8 @@ public:
         }
     }
 
-    void updateWoodConnections();
+    void updateWoodConnections(); 
+    const std::vector<std::unique_ptr<Building>>& getBuildings() const { return m_buildings; }
 
 private:
     bool isConnectedToWood(const sf::Vector2i& t_pos);

@@ -8,17 +8,18 @@ public:
     Enemy() : m_target(nullptr) {
         m_sprite.setTexture(m_textureManager.getTexture("Enemy_Sample"));
         resizeToTileSize(m_sprite);
+        m_sprite.setPosition(200.0f, 200.0f);
     }
 
-    void update(const std::vector<std::shared_ptr<Building>>& t_buildings);
+    void update(const std::vector<std::unique_ptr<Building>>& t_buildings);
     void render(sf::RenderWindow& t_window) const;
 
 private:
     sf::Sprite m_sprite;
-    std::shared_ptr<Building> m_target;
-    float m_speed = 5.0f;
+    Building* m_target;
+    float m_speed = 0.5f;
 
-    void findClosestBuilding(const std::vector<std::shared_ptr<Building>>& t_buildings);
+    void findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_buildings);
     void moveToTarget();
 };
 

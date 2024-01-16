@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "UIPanel.h"
+#include "Enemy.h"
 
 class Game
 {
@@ -25,6 +26,7 @@ private:
 
 	TileMap m_testMap;
 	UIPanel m_uiPanel;
+	Enemy m_testEnemy;
 };
 
 #endif // !GAME_HPP
