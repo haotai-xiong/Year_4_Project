@@ -80,3 +80,9 @@ bool TileMap::isConnectedToWood(const sf::Vector2i& t_pos) {
 	}
 	return false;
 }
+
+bool TileMap::isWalkable(const sf::Vector2f& position) {
+	sf::Vector2i tilePos = worldToTileCoordIndex(position);
+	Tile* tile = getTile(tilePos);
+	return tile && tile->getType() == TileType::Traversable;
+}

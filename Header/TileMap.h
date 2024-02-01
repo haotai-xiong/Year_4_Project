@@ -27,6 +27,8 @@ public:
 
     void updateWoodConnections(); 
     const std::vector<std::unique_ptr<Building>>& getBuildings() const { return m_buildings; }
+    bool isWalkable(const sf::Vector2f& position);
+
 
 private:
     bool isConnectedToWood(const sf::Vector2i& t_pos);
