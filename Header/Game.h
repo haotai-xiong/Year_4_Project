@@ -26,7 +26,7 @@ private:
 
 	TileMap m_testMap;
 	UIPanel m_uiPanel;
-	Enemy m_testEnemy;
+	Enemy m_testEnemy[1];
 };
 
 #endif // !GAME_HPP

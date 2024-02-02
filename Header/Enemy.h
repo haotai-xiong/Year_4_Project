@@ -1,7 +1,6 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "Buildings.h"
 #include "TileMap.h"
 
 class Enemy {
@@ -16,13 +15,14 @@ public:
     void update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map);
     void render(sf::RenderWindow& t_window) const;
 
+    void findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_buildings);
+
 private:
     sf::Sprite m_sprite;
     Building* m_target;
     float m_speed = 0.5f;
-    float m_viewDistance = 50.0f;
+    float m_viewDistance = 75.0f;
 
-    void findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_buildings);
     void moveToTarget(TileMap& t_map);
     bool rayIntersectsObstacle(const sf::Vector2f& t_direction, float t_distance, TileMap& t_map);
     sf::Vector2f rotateVector(const sf::Vector2f& t_vector, float t_angleDegrees);

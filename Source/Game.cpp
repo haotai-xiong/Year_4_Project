@@ -64,7 +64,7 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
-		m_uiPanel.processEvent(newEvent, m_window, m_testMap);
+		m_uiPanel.processEvent(newEvent, m_window, m_testMap, m_testEnemy, 1);
 	}
 }
 
@@ -89,7 +89,10 @@ void Game::update(sf::Time t_deltaTime)
 {
 	m_uiPanel.update(m_window);
 	m_testMap.update();
-	m_testEnemy.update(m_testMap.getBuildings(), m_testMap);
+	for (auto& enemy : m_testEnemy)
+	{
+		enemy.update(m_testMap.getBuildings(), m_testMap);
+	}
 
 	if (m_exitGame)
 	{
@@ -106,7 +109,10 @@ void Game::render()
 
 	m_testMap.render(m_window);
 	m_uiPanel.render(m_window);
-	m_testEnemy.render(m_window);
+	for (auto& enemy : m_testEnemy)
+	{
+		enemy.render(m_window);
+	}
 
 	m_window.display();
 }

@@ -30,7 +30,7 @@ void UIPanel::render(sf::RenderWindow& t_window) {
     }
 }
 
-void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map) {
+void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, Enemy t_enemy[], int t_enemySize) {
     if (sf::Event::MouseButtonPressed == t_event.type) {
         sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(t_window));
         if (hovered()) {
@@ -59,6 +59,10 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
                     t_map.addBuilding<Plant>(worldPos, TileType::Tower, "tower");
                 }
                 t_map.updateWoodConnections();
+                for (int i = 0; i < t_enemySize; i++)
+                {
+                    t_enemy[i].findClosestBuilding(t_map.getBuildings());
+                }
                 // Reset the selection after placing a building
                 resetSelection();
             }

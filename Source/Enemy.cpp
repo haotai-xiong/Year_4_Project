@@ -2,7 +2,7 @@
 
 void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map) {
     if (!m_target) {
-        findClosestBuilding(t_buildings);
+        // findClosestBuilding(t_buildings);
     }
     if (m_target) {
         moveToTarget(t_map);
@@ -21,8 +21,8 @@ void Enemy::findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_
 
     auto closestIt = std::min_element(t_buildings.begin(), t_buildings.end(),
         [this](const std::unique_ptr<Building>& t_left, const std::unique_ptr<Building>& t_right) {
-            return distance(m_sprite.getPosition(), t_left->pos()) <
-                distance(m_sprite.getPosition(), t_right->pos());
+            return t_left->weakLevel() >
+                t_right->weakLevel();
         });
 
     m_target = closestIt->get();

@@ -5,12 +5,14 @@
 
 class Building {
 public:
-    Building(const sf::Vector2f& t_pos, std::string t_textureName) : m_pos(t_pos) {}
+    Building(const sf::Vector2f& t_pos, std::string t_textureName) : m_pos(t_pos), m_weakLevel(0) {}
 
     virtual ~Building() {}
 
     sf::Vector2f pos() const { return m_pos; }
     void pos(sf::Vector2f& t_pos) { m_pos = std::move(t_pos); }
+    int weakLevel() const { return m_weakLevel; }
+    void weakLevel(int t_level) { m_weakLevel = t_level; }
 
     virtual void render(sf::RenderWindow& t_window) const {
         t_window.draw(m_sprite);
@@ -19,6 +21,7 @@ public:
 protected:
     sf::Vector2f m_pos;
     sf::Sprite m_sprite;
+    int m_weakLevel;
 };
 
 class House : public Building {
@@ -27,7 +30,9 @@ public:
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
+        m_weakLevel = 2;
     }
+
 };
 
 class Factory : public Building {
@@ -36,6 +41,7 @@ public:
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
+        m_weakLevel = 10;
     }
 
     void connectToWood() {
@@ -70,6 +76,7 @@ public:
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
+        m_weakLevel = 4;
     }
 
     void woodToEnergy() {
@@ -108,6 +115,7 @@ public:
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
+        m_weakLevel = 3;
     }
 };
 
@@ -117,6 +125,7 @@ public:
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
+        m_weakLevel = 1;
     }
 };
 
