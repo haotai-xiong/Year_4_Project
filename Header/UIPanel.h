@@ -24,10 +24,11 @@ public:
     UIPanel(float t_width = 200.0f, float t_height = 500.0f, sf::Vector2f t_screenSize = sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT))
         : width(t_width), height(t_height), screenSize(t_screenSize), m_hovered(false) {
         panelShape.setSize(sf::Vector2f(width, height));
-        panelShape.setFillColor(sf::Color(100, 100, 100, 200)); // Semi-transparent
+        panelShape.setFillColor(sf::Color(100, 100, 100, 192)); // Semi-transparent
         panelShape.setPosition(sf::Vector2f(screenSize.x - t_width / 10.0f, screenSize.y - height));
 
         buttonSetup();
+        resourcePanelSetup();
     }
 
     void update(const sf::RenderWindow& t_window);
@@ -42,6 +43,8 @@ public:
 private:
     
     void buttonSetup();
+    void resourcePanelSetup();
+    void resourcePanelUpdate();
 
     float width;
     float height;
@@ -61,6 +64,14 @@ private:
         {"plant", sf::Vector2f(10.0f, 260.0f), BuildingOption::Plant},
         {"tower", sf::Vector2f(10.0f, 320.0f), BuildingOption::Tower},
     };
+    
+    // UI Panel for resources and time
+    sf::RectangleShape m_resourcePanel;
+    sf::Text m_woodText;
+    sf::Text m_metalText;
+    sf::Text m_energyText;
+    sf::Text m_wasteText;
+    sf::Text m_prosperityText;
 };
 
 #endif // !UIPANEL_H

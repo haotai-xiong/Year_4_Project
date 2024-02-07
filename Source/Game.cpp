@@ -108,11 +108,11 @@ void Game::render()
 	m_window.clear(sf::Color::Black);
 
 	m_testMap.render(m_window);
-	m_uiPanel.render(m_window);
 	for (auto& enemy : m_testEnemy)
 	{
 		enemy.render(m_window);
 	}
+	m_uiPanel.render(m_window);
 
 	m_window.display();
 }

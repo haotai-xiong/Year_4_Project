@@ -16,6 +16,8 @@ void UIPanel::update(const sf::RenderWindow& t_window) {
         auto& text = texts[config.m_option];
         text.setPosition(panelShape.getPosition() + config.m_positionOffset + sf::Vector2f(0.0f, 40.0f));
     }
+
+    resourcePanelUpdate();
 }
 
 void UIPanel::render(sf::RenderWindow& t_window) {
@@ -28,6 +30,13 @@ void UIPanel::render(sf::RenderWindow& t_window) {
     for (const auto& [option, text] : texts) {
         t_window.draw(text);
     }
+
+    t_window.draw(m_resourcePanel);
+    t_window.draw(m_woodText);
+    t_window.draw(m_metalText);
+    t_window.draw(m_energyText);
+    t_window.draw(m_wasteText);
+    t_window.draw(m_prosperityText);
 }
 
 void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, Enemy t_enemy[], int t_enemySize) {
@@ -92,4 +101,48 @@ void UIPanel::buttonSetup() {
         text.setString(config.m_textureName);
         texts[config.m_option] = text;
     }
+}
+
+void UIPanel::resourcePanelSetup(){
+    m_resourcePanel.setSize(sf::Vector2f(height + 100.0f, width / 2.0f));
+    m_resourcePanel.setFillColor(sf::Color(100, 100, 100, 192));
+    // wood text
+    m_woodText.setFont(m_textureManager.getFont("cherii"));
+    m_woodText.setFillColor(sf::Color::Black);
+    m_woodText.setCharacterSize(18.0f);
+    m_woodText.setString("Wood Resource: ");
+    m_woodText.setPosition(sf::Vector2f(0.0f, 10.0f));
+    // metal text
+    m_metalText.setFont(m_textureManager.getFont("cherii"));
+    m_metalText.setFillColor(sf::Color::Black);
+    m_metalText.setCharacterSize(18.0f);
+    m_metalText.setString("Metal Resource: ");
+    m_metalText.setPosition(sf::Vector2f(0.0f, 60.0f));
+    // energy text
+    m_energyText.setFont(m_textureManager.getFont("cherii"));
+    m_energyText.setFillColor(sf::Color::Black);
+    m_energyText.setCharacterSize(18.0f);
+    m_energyText.setString("Energy Resource: ");
+    m_energyText.setPosition(sf::Vector2f(200.0f, 10.0f));
+    // waste text
+    m_wasteText.setFont(m_textureManager.getFont("cherii"));
+    m_wasteText.setFillColor(sf::Color::Black);
+    m_wasteText.setCharacterSize(18.0f);
+    m_wasteText.setString("Waste Resource: ");
+    m_wasteText.setPosition(sf::Vector2f(200.0f, 60.0f));
+    // prosperity text
+    m_prosperityText.setFont(m_textureManager.getFont("cherii"));
+    m_prosperityText.setFillColor(sf::Color::Black);
+    m_prosperityText.setCharacterSize(18.0f);
+    m_prosperityText.setString("Prosperity: ");
+    m_prosperityText.setPosition(sf::Vector2f(450.0f, 10.0f));
+}
+
+void UIPanel::resourcePanelUpdate()
+{
+    m_woodText.setString("Wood Resource: " + std::to_string(woodAmount));
+    m_metalText.setString("Metal Resource: " + std::to_string(metalAmount));
+    m_energyText.setString("Energy Resource: " + std::to_string(energyAmount));
+    m_wasteText.setString("Waste Resource: " + std::to_string(wasteAmount));
+    m_prosperityText.setString("Prosperity: " + std::to_string(prosperity));
 }
