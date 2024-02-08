@@ -32,6 +32,7 @@ public:
         m_sprite.setPosition(m_pos);
         m_weakLevel = 2;
         woodAmount -= woodCost;
+        // test
     }
 
 private:
