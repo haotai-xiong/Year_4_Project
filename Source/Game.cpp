@@ -64,7 +64,7 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
-		m_uiPanel.processEvent(newEvent, m_window, m_testMap, m_testEnemy, 1);
+		m_uiPanel.processEvent(newEvent, m_window, m_testMap, enemies);
 	}
 }
 
@@ -89,15 +89,16 @@ void Game::update(sf::Time t_deltaTime)
 {
 	m_uiPanel.update(m_window);
 	m_testMap.update();
-	for (auto& enemy : m_testEnemy)
+	for (auto& enemy : enemies)
 	{
-		enemy.update(m_testMap.getBuildings(), m_testMap);
+		enemy->update(m_testMap.getBuildings(), m_testMap);
 	}
 
 	if (m_exitGame)
 	{
 		m_window.close();
 	}
+	summonEnemy();
 }
 
 /// <summary>
@@ -108,11 +109,23 @@ void Game::render()
 	m_window.clear(sf::Color::Black);
 
 	m_testMap.render(m_window);
-	for (auto& enemy : m_testEnemy)
+	for (auto& enemy : enemies)
 	{
-		enemy.render(m_window);
+		enemy->render(m_window);
 	}
 	m_uiPanel.render(m_window);
 
 	m_window.display();
+}
+
+void Game::summonEnemy()
+{
+	if (m_clock.getElapsedTime().asSeconds() >= summonInterval) {
+		int enemyNumber = wasteAmount / 50;
+		for (int i = 0; i < enemyNumber; i++)
+		{
+			enemies.push_back(std::make_unique<Enemy>());
+		}
+		m_clock.restart();
+	}
 }

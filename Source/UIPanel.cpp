@@ -39,7 +39,7 @@ void UIPanel::render(sf::RenderWindow& t_window) {
     t_window.draw(m_prosperityText);
 }
 
-void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, Enemy t_enemy[], int t_enemySize) {
+void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, std::vector<std::unique_ptr<Enemy>>& t_enemies) {
     if (sf::Event::MouseButtonPressed == t_event.type) {
         sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(t_window));
         if (hovered()) {
@@ -68,10 +68,12 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
                     t_map.addBuilding<Plant>(worldPos, TileType::Tower, "tower");
                 }
                 t_map.updateWoodConnections();
-                for (int i = 0; i < t_enemySize; i++)
+                /*
+                for (auto& enemy : t_enemies)
                 {
-                    t_enemy[i].findClosestBuilding(t_map.getBuildings());
+                    enemy->findClosestBuilding(t_map.getBuildings());
                 }
+                */
                 // Reset the selection after placing a building
                 resetSelection();
             }
@@ -143,6 +145,9 @@ void UIPanel::resourcePanelUpdate()
     m_woodText.setString("Wood Resource: " + std::to_string(woodAmount));
     m_metalText.setString("Metal Resource: " + std::to_string(metalAmount));
     m_energyText.setString("Energy Resource: " + std::to_string(energyAmount));
-    m_wasteText.setString("Waste Resource: " + std::to_string(wasteAmount));
+    std::ostringstream stream;
+    stream << std::fixed << std::setprecision(2) << wasteAmount;
+    std::string formattedWasteAmount = stream.str();
+    m_wasteText.setString("Waste Resource: " + formattedWasteAmount);
     m_prosperityText.setString("Prosperity: " + std::to_string(prosperity));
 }

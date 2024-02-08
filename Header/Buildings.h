@@ -67,7 +67,7 @@ public:
 private:
     bool hasWoodConnection = false;
     static constexpr int woodCollectRate = 1;
-    static constexpr int wasteGenerateRate = 1;
+    static constexpr float wasteGenerateRate = 0.05f;
 };
 
 class Landfill : public Building {

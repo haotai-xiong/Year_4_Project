@@ -9,7 +9,7 @@ public:
         m_sprite.setTexture(m_textureManager.getTexture("Enemy_Sample"));
         resizeToTileSize(m_sprite);
         //m_sprite.setOrigin(sf::Vector2f(25.0f, 25.0f));
-        m_sprite.setPosition(200.0f, 200.0f);
+        m_sprite.setPosition(generateRandomPosition());
     }
 
     void update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map);

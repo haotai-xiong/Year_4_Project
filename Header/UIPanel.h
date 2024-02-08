@@ -33,7 +33,7 @@ public:
 
     void update(const sf::RenderWindow& t_window);
     void render(sf::RenderWindow& t_window);
-    void processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, Enemy t_enemy[], int t_enemySize);
+    void processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, std::vector<std::unique_ptr<Enemy>>& t_enemies);
 
     void handleMouseClick(const sf::Vector2f& mousePos);
     BuildingOption getSelectedOption() const { return selectedOption; }

@@ -42,10 +42,22 @@ inline float distance(const sf::Vector2f& t_left, const sf::Vector2f& t_right) {
     return std::sqrt(delta.x * delta.x + delta.y * delta.y);
 }
 
+inline sf::Vector2f generateRandomPosition() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_real_distribution<float> disX(0.0f, 1000.0f);
+    std::uniform_real_distribution<float> disY(0.0f, 1000.0f);
+
+    sf::Vector2f randomPosition(disX(gen), disY(gen));
+    return randomPosition;
+}
+
 inline int woodAmount = 0;
 inline int metalAmount = 0;
 inline int energyAmount = 0;
-inline int wasteAmount = 0;
+inline float wasteAmount = 0.0f;
 inline int prosperity = 0;
+inline float summonInterval = 30.0f;
 
 #endif // !GLOBALS_HPP

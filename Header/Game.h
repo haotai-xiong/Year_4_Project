@@ -21,13 +21,15 @@ private:
 	void update(sf::Time t_deltaTime);
 	void render();
 
+	void summonEnemy();
+
 	sf::RenderWindow m_window; // main SFML window
 	bool m_exitGame; // control exiting game
 
 	TileMap m_testMap;
 	UIPanel m_uiPanel;
-	Enemy m_testEnemy[1];
+	std::vector<std::unique_ptr<Enemy>> enemies;
+	sf::Clock m_clock;
 };
 
 #endif // !GAME_HPP
-

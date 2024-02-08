@@ -8,6 +8,9 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <iomanip>
+#include <sstream>
+#include <random>
 
 class TextureManager {
 public:

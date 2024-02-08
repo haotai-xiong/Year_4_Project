@@ -2,7 +2,7 @@
 
 void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map) {
     if (!m_target) {
-        // findClosestBuilding(t_buildings);
+        findClosestBuilding(t_buildings);
     }
     if (m_target) {
         moveToTarget(t_map);
