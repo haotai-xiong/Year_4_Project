@@ -49,8 +49,10 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
             auto selectedOption = getSelectedOption();
             if (selectedOption != UIPanel::BuildingOption::None) {
                 sf::Vector2f worldPos = t_window.mapPixelToCoords(sf::Mouse::getPosition(t_window));
-                if (selectedOption == UIPanel::BuildingOption::House) {
+                if (selectedOption == UIPanel::BuildingOption::House
+                    && woodAmount >= 500) {
                     t_map.addBuilding<House>(worldPos, TileType::House, "house");
+                    prosperity += 50;
                 }
                 else if (selectedOption == UIPanel::BuildingOption::Factory) {
                     t_map.addBuilding<Factory>(worldPos, TileType::Factory, "factory");
