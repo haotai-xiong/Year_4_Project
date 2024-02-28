@@ -7,7 +7,9 @@
 /// </summary>
 Game::Game() :
 	m_window{ sf::VideoMode{ 1000U, 1000U, 32U }, "SFML Game" },
-	m_exitGame{false} //when true game will exit
+	m_exitGame{false}, //when true game will exit
+	m_weather(m_window),
+	m_techTreeMenu(m_window)
 {
 }
 
@@ -27,18 +29,15 @@ Game::~Game()
 /// draw as often as possible but only updates are on time
 /// if updates run slow then don't render frames
 /// </summary>
-void Game::run()
-{
+void Game::run() {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	const float fps{ 60.0f };
 	sf::Time timePerFrame = sf::seconds(1.0f / fps); // 60 fps
-	while (m_window.isOpen())
-	{
+	while (m_window.isOpen()) {
 		processEvents(); // as many as possible
 		timeSinceLastUpdate += clock.restart();
-		while (timeSinceLastUpdate > timePerFrame)
-		{
+		while (timeSinceLastUpdate > timePerFrame) {
 			timeSinceLastUpdate -= timePerFrame;
 			processEvents(); // at least 60 fps
 			update(timePerFrame); //60 fps
@@ -51,20 +50,19 @@ void Game::run()
 /// get key presses/ mouse moves etc. from OS
 /// and user :: Don't do game update here
 /// </summary>
-void Game::processEvents()
-{
+void Game::processEvents() {
 	sf::Event newEvent;
-	while (m_window.pollEvent(newEvent))
-	{
-		if ( sf::Event::Closed == newEvent.type) // window message
-		{
+	while (m_window.pollEvent(newEvent)) {
+		// window message 
+		if ( sf::Event::Closed == newEvent.type) {
 			m_exitGame = true;
 		}
-		if (sf::Event::KeyPressed == newEvent.type) //user pressed a key
-		{
+		// user pressed a key
+		if (sf::Event::KeyPressed == newEvent.type) {
 			processKeys(newEvent);
 		}
 		m_uiPanel.processEvent(newEvent, m_window, m_testMap, enemies);
+		m_techTreeMenu.update(newEvent);
 	}
 }
 
@@ -73,11 +71,12 @@ void Game::processEvents()
 /// deal with key presses from the user
 /// </summary>
 /// <param name="t_event">key press event</param>
-void Game::processKeys(sf::Event t_event)
-{
-	if (sf::Keyboard::Escape == t_event.key.code)
-	{
+void Game::processKeys(sf::Event t_event) {
+	if (sf::Keyboard::Escape == t_event.key.code) {
 		m_exitGame = true;
+	}
+	else if (sf::Keyboard::C == t_event.key.code) {
+		m_weather.switchWeather();
 	}
 }
 
@@ -85,35 +84,33 @@ void Game::processKeys(sf::Event t_event)
 /// Update the game world
 /// </summary>
 /// <param name="t_deltaTime">time interval per frame</param>
-void Game::update(sf::Time t_deltaTime)
-{
+void Game::update(sf::Time t_deltaTime) {
 	m_uiPanel.update(m_window);
-	m_testMap.update();
-	for (auto& enemy : enemies)
-	{
-		enemy->update(m_testMap.getBuildings(), m_testMap);
+	m_testMap.update(m_weather);
+	for (auto& enemy : enemies) {
+		enemy->update(m_testMap.getBuildings(), m_testMap, m_weather);
 	}
 
-	if (m_exitGame)
-	{
+	if (m_exitGame) {
 		m_window.close();
 	}
 	summonEnemy();
+	m_weather.update(t_deltaTime);
 }
 
 /// <summary>
 /// draw the frame and then switch buffers
 /// </summary>
-void Game::render()
-{
+void Game::render() {
 	m_window.clear(sf::Color::Black);
 
 	m_testMap.render(m_window);
-	for (auto& enemy : enemies)
-	{
+	for (auto& enemy : enemies) {
 		enemy->render(m_window);
 	}
 	m_uiPanel.render(m_window);
+	m_weather.render();
+	m_techTreeMenu.render();
 
 	m_window.display();
 }
@@ -122,8 +119,7 @@ void Game::summonEnemy()
 {
 	if (m_clock.getElapsedTime().asSeconds() >= summonInterval) {
 		int enemyNumber = wasteAmount / 50;
-		for (int i = 0; i < enemyNumber; i++)
-		{
+		for (int i = 0; i < enemyNumber; i++) {
 			enemies.push_back(std::make_unique<Enemy>());
 		}
 		m_clock.restart();

@@ -3,6 +3,8 @@
 
 #include "UIPanel.h"
 #include "Enemy.h"
+#include "Weather.h"
+#include "TechTree.h"
 
 class Game
 {
@@ -29,6 +31,9 @@ private:
 	TileMap m_testMap;
 	UIPanel m_uiPanel;
 	std::vector<std::unique_ptr<Enemy>> enemies;
+	Weather m_weather;
+	TechTree m_techTreeMenu;
+
 	sf::Clock m_clock;
 };
 

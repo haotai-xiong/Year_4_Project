@@ -30,11 +30,11 @@ void TileMap::setTile(sf::Vector2i t_pos, TileType t_type) {
 	}
 }
 
-void TileMap::update() {
+void TileMap::update(Weather& t_weather) {
 	for (auto& building : m_buildings) {
 		auto* factory = dynamic_cast<Factory*>(building.get());
 		if (factory) {
-			factory->updateWoodCollection();
+			factory->updateWoodCollection(t_weather);
 		}
 
 		auto* landfill = dynamic_cast<Landfill*>(building.get());

@@ -2,6 +2,7 @@
 #define ENEMY_H
 
 #include "TileMap.h"
+#include "Weather.h"
 
 class Enemy {
 public:
@@ -12,7 +13,7 @@ public:
         m_sprite.setPosition(generateRandomPosition());
     }
 
-    void update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map);
+    void update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map, Weather& t_weather);
     void render(sf::RenderWindow& t_window) const;
 
     void findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_buildings);
@@ -23,7 +24,7 @@ private:
     float m_speed = 0.5f;
     float m_viewDistance = 75.0f;
 
-    void moveToTarget(TileMap& t_map);
+    void moveToTarget(TileMap& t_map, Weather& t_weather);
     bool rayIntersectsObstacle(const sf::Vector2f& t_direction, float t_distance, TileMap& t_map);
     sf::Vector2f rotateVector(const sf::Vector2f& t_vector, float t_angleDegrees);
 };

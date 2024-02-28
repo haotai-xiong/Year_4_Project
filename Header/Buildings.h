@@ -1,7 +1,7 @@
 #ifndef BUILDINGS_H
 #define BUILDINGS_H
 
-#include "Globals.h"
+#include "Weather.h"
 
 class Building {
 public:
@@ -40,7 +40,8 @@ private:
 
 class Factory : public Building {
 public:
-    Factory(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
+    Factory(const sf::Vector2f& t_pos, std::string t_textureName) 
+        : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
@@ -55,10 +56,16 @@ public:
         hasWoodConnection = false;
     }
 
-    void updateWoodCollection() const {
+    void updateWoodCollection(Weather& t_weather) const {
         if (hasWoodConnection) {
-            woodAmount += woodCollectRate;
-            wasteAmount += wasteGenerateRate;
+            if (t_weather.getCurrentWeather() == Weather::Type::Thunder) {
+                woodAmount += woodCollectRateThunder;
+                wasteAmount += wasteGenerateRate;
+            }
+            else {
+                woodAmount += woodCollectRate;
+                wasteAmount += wasteGenerateRate;
+            }
         }
 
         if (0 == woodAmount % 200 && 0 != woodAmount) {
@@ -69,7 +76,8 @@ public:
 
 private:
     bool hasWoodConnection = false;
-    static constexpr int woodCollectRate = 1;
+    static constexpr int woodCollectRate = 2;
+    static constexpr int woodCollectRateThunder = 1;
     static constexpr float wasteGenerateRate = 0.05f;
 };
 

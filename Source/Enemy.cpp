@@ -1,11 +1,11 @@
 #include "Enemy.h"
 
-void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map) {
+void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map, Weather& t_weather) {
     if (!m_target) {
         findClosestBuilding(t_buildings);
     }
     if (m_target) {
-        moveToTarget(t_map);
+        moveToTarget(t_map, t_weather);
     }
 }
 
@@ -28,7 +28,7 @@ void Enemy::findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_
     m_target = closestIt->get();
 }
 
-void Enemy::moveToTarget(TileMap& t_map) {
+void Enemy::moveToTarget(TileMap& t_map, Weather& t_weather) {
     sf::Vector2f direction = m_target->pos() - m_sprite.getPosition();
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
@@ -60,7 +60,12 @@ void Enemy::moveToTarget(TileMap& t_map) {
         }
 
         // Move in the chosen direction
-        m_sprite.move(direction * m_speed);
+        if (t_weather.getCurrentWeather() == Weather::Type::Rainy) {
+            m_sprite.move(direction * m_speed * 0.5f);
+        }
+        else {
+            m_sprite.move(direction * m_speed);
+        }
     }
 }
 
