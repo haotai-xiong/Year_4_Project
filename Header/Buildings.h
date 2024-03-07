@@ -11,6 +11,7 @@ public:
 
     sf::Vector2f pos() const { return m_pos; }
     void pos(sf::Vector2f& t_pos) { m_pos = std::move(t_pos); }
+    sf::Sprite sprite() const { return m_sprite; }
     int weakLevel() const { return m_weakLevel; }
     void weakLevel(int t_level) { m_weakLevel = t_level; }
 
@@ -155,7 +156,37 @@ public:
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
+        m_weakLevel = 0;
+
+        m_emitter.setRadius(m_radius); 
+        m_emitter.setOrigin(m_radius, m_radius);
+        m_emitter.setPosition(sf::Vector2f(m_pos.x + 20.0f, m_pos.y + 20.0f));
+        m_emitter.setOutlineColor(sf::Color::White);
+        m_emitter.setOutlineThickness(3.0f);
+        m_emitter.setFillColor(sf::Color::Transparent);
     }
+
+    void drawEmit(sf::RenderWindow& t_window) {
+        m_emitter.setRadius(m_radius);
+        m_emitter.setOrigin(m_radius, m_radius);
+        m_emitter.setPosition(sf::Vector2f(m_pos.x + 20.0f, m_pos.y + 20.0f));
+        t_window.draw(m_emitter);
+
+        m_radius += growthRate;
+
+        if (m_radius >= m_MAXRADIUS)
+        {
+            m_radius = 1.0f;
+        }
+    }
+
+    float MAXRADIUS() { return m_MAXRADIUS; }
+
+private:
+    sf::CircleShape m_emitter;
+    float m_radius = 1.0f;
+    float growthRate = 0.01f;
+    float m_MAXRADIUS = 80.0f;
 };
 
 #endif

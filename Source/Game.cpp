@@ -85,6 +85,7 @@ void Game::processKeys(sf::Event t_event) {
 /// </summary>
 /// <param name="t_deltaTime">time interval per frame</param>
 void Game::update(sf::Time t_deltaTime) {
+	m_player.update();
 	m_uiPanel.update(m_window);
 	m_testMap.update(m_weather);
 	for (auto& enemy : enemies) {
@@ -111,6 +112,7 @@ void Game::render() {
 	m_uiPanel.render(m_window);
 	m_weather.render();
 	m_techTreeMenu.render();
+	m_player.render(m_window);
 
 	m_window.display();
 }

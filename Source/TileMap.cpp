@@ -37,6 +37,11 @@ void TileMap::update(Weather& t_weather) {
 			factory->updateWoodCollection(t_weather);
 		}
 
+		auto* tower = dynamic_cast<Tower*>(building.get());
+		if (tower) {
+			// tower->drawEmit(t_window);
+		}
+
 		auto* landfill = dynamic_cast<Landfill*>(building.get());
 		if (landfill) {
 			landfill->woodToEnergy();

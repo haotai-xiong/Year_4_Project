@@ -137,6 +137,7 @@
     <ClInclude Include="..\Header\Enemy.h" />
     <ClInclude Include="..\Header\Game.h" />
     <ClInclude Include="..\Header\Globals.h" />
+    <ClInclude Include="..\Header\Player.h" />
     <ClInclude Include="..\Header\TechTree.h" />
     <ClInclude Include="..\Header\TextureManager.h" />
     <ClInclude Include="..\Header\Tile.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="..\Source\Enemy.cpp" />
     <ClCompile Include="..\Source\Game.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
+    <ClCompile Include="..\Source\Player.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />
     <ClCompile Include="..\Source\TileMap.cpp" />
     <ClCompile Include="..\Source\UIPanel.cpp" />

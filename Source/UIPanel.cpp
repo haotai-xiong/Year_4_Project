@@ -67,7 +67,7 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
                     t_map.addBuilding<Plant>(worldPos, TileType::Plant, "plant");
                 }
                 else if (selectedOption == UIPanel::BuildingOption::Tower) {
-                    t_map.addBuilding<Plant>(worldPos, TileType::Tower, "tower");
+                    t_map.addBuilding<Tower>(worldPos, TileType::Tower, "tower");
                 }
                 t_map.updateWoodConnections();
                 /*

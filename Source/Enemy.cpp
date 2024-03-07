@@ -6,11 +6,14 @@ void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, Ti
     }
     if (m_target) {
         moveToTarget(t_map, t_weather);
+        detectTower(t_map);
     }
 }
 
 void Enemy::render(sf::RenderWindow& t_window) const {
-    t_window.draw(m_sprite);
+    if (alive) {
+        t_window.draw(m_sprite);
+    }
 }
 
 void Enemy::findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_buildings) {
@@ -92,4 +95,14 @@ sf::Vector2f Enemy::rotateVector(const sf::Vector2f& t_vector, float t_angleDegr
         t_vector.x * cos(rad) - t_vector.y * sin(rad),
         t_vector.x * sin(rad) + t_vector.y * cos(rad)
     );
+}
+
+void Enemy::detectTower(TileMap& t_map)
+{
+    for (auto& building : t_map.getBuildings()) {
+        auto* tower = dynamic_cast<Tower*>(building.get());
+        if (tower && distance(tower->pos(), m_sprite.getPosition()) < tower->MAXRADIUS()) {
+            alive = false;
+        }
+    }
 }

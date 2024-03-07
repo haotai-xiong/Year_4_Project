@@ -3,6 +3,7 @@
 
 #include "TileMap.h"
 #include "Weather.h"
+#include "memory.h"
 
 class Enemy {
 public:
@@ -23,10 +24,12 @@ private:
     Building* m_target;
     float m_speed = 0.5f;
     float m_viewDistance = 75.0f;
+    bool alive = true;
 
     void moveToTarget(TileMap& t_map, Weather& t_weather);
     bool rayIntersectsObstacle(const sf::Vector2f& t_direction, float t_distance, TileMap& t_map);
     sf::Vector2f rotateVector(const sf::Vector2f& t_vector, float t_angleDegrees);
+    void detectTower(TileMap& t_map);
 };
 
 #endif // !ENEMY_H

@@ -22,6 +22,11 @@ public:
     void renderBuildings(sf::RenderWindow& window) {
         for (const auto& building : m_buildings) {
             building->render(window);
+
+            auto* tower = dynamic_cast<Tower*>(building.get());
+            if (tower) {
+                tower->drawEmit(window);
+            }
         }
     }
 

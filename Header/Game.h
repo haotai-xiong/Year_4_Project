@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Weather.h"
 #include "TechTree.h"
+#include "Player.h"
 
 class Game
 {
@@ -33,6 +34,7 @@ private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	Weather m_weather;
 	TechTree m_techTreeMenu;
+	Player m_player;
 
 	sf::Clock m_clock;
 };

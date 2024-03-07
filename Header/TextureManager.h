@@ -23,6 +23,7 @@ public:
         loadTexture("plant", "../Assets/Project/Building/plant.png");
         loadTexture("tower", "../Assets/Project/Building/tower3.png");
         loadTexture("wood", "../Assets/Project/Building/wood.png");
+        loadTexture("projectile", "../Assets/Project/Building/Projectile.png");
         // enemy
         loadTexture("Enemy_Sample", "../Assets/Project/Character/enemy_sample.png");
         // fonts
