@@ -49,35 +49,31 @@ void UIPanel::processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileM
             auto selectedOption = getSelectedOption();
             if (selectedOption != UIPanel::BuildingOption::None) {
                 sf::Vector2f worldPos = t_window.mapPixelToCoords(sf::Mouse::getPosition(t_window));
-                if (selectedOption == UIPanel::BuildingOption::House
-                    && woodAmount >= 500) {
-                    t_map.addBuilding<House>(worldPos, TileType::House, "house");
-                    prosperity += 50;
+                if (TileType::Traversable == t_map.getTile(worldToTileCoordIndex(worldPos))->getType()) {
+                    if (selectedOption == UIPanel::BuildingOption::House
+                        && woodAmount >= 500) {
+                        t_map.addBuilding<House>(worldPos, TileType::House, "house");
+                        prosperity += 50;
+                    }
+                    else if (selectedOption == UIPanel::BuildingOption::Factory) {
+                        t_map.addBuilding<Factory>(worldPos, TileType::Factory, "factory");
+                    }
+                    else if (selectedOption == UIPanel::BuildingOption::RecyclingCenter) {
+                        t_map.addBuilding<RecyclingCenter>(worldPos, TileType::RecyclingCenter, "recycling center");
+                    }
+                    else if (selectedOption == UIPanel::BuildingOption::Landfill) {
+                        t_map.addBuilding<Landfill>(worldPos, TileType::Landfill, "landfill");
+                    }
+                    else if (selectedOption == UIPanel::BuildingOption::Plant) {
+                        t_map.addBuilding<Plant>(worldPos, TileType::Plant, "plant");
+                    }
+                    else if (selectedOption == UIPanel::BuildingOption::Tower) {
+                        t_map.addBuilding<Tower>(worldPos, TileType::Tower, "tower");
+                    }
+                    t_map.updateWoodConnections();
+                    // Reset the selection after placing a building
+                    resetSelection();
                 }
-                else if (selectedOption == UIPanel::BuildingOption::Factory) {
-                    t_map.addBuilding<Factory>(worldPos, TileType::Factory, "factory");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::RecyclingCenter) {
-                    t_map.addBuilding<RecyclingCenter>(worldPos, TileType::RecyclingCenter, "recycling center");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::Landfill) {
-                    t_map.addBuilding<Landfill>(worldPos, TileType::Landfill, "landfill");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::Plant) {
-                    t_map.addBuilding<Plant>(worldPos, TileType::Plant, "plant");
-                }
-                else if (selectedOption == UIPanel::BuildingOption::Tower) {
-                    t_map.addBuilding<Tower>(worldPos, TileType::Tower, "tower");
-                }
-                t_map.updateWoodConnections();
-                /*
-                for (auto& enemy : t_enemies)
-                {
-                    enemy->findClosestBuilding(t_map.getBuildings());
-                }
-                */
-                // Reset the selection after placing a building
-                resetSelection();
             }
         }
     }

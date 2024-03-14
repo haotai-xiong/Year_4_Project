@@ -5,6 +5,7 @@ TileMap::TileMap() {
 	for (int y = 0; y < height_Num; y++) {
 		for (int x = 0; x < width_Num; x++) {
 			tiles[y][x] = Tile(sf::Vector2i(x, y), TileType::Traversable);
+			tiles[y][x].setType(TileType::Traversable);
 		}
 	}
 

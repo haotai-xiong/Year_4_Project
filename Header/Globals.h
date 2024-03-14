@@ -58,6 +58,6 @@ inline int metalAmount = 0;
 inline int energyAmount = 0;
 inline float wasteAmount = 0.0f;
 inline int prosperity = 0;
-inline float summonInterval = 30.0f;
+inline float summonInterval = 10.0f;
 
 #endif // !GLOBALS_HPP

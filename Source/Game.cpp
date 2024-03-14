@@ -62,7 +62,7 @@ void Game::processEvents() {
 			processKeys(newEvent);
 		}
 		m_uiPanel.processEvent(newEvent, m_window, m_testMap, enemies);
-		m_techTreeMenu.update(newEvent);
+		m_techTreeMenu.update(newEvent, m_player);
 	}
 }
 
@@ -85,18 +85,20 @@ void Game::processKeys(sf::Event t_event) {
 /// </summary>
 /// <param name="t_deltaTime">time interval per frame</param>
 void Game::update(sf::Time t_deltaTime) {
-	m_player.update();
+	m_player.update(t_deltaTime);
 	m_uiPanel.update(m_window);
 	m_testMap.update(m_weather);
 	for (auto& enemy : enemies) {
 		enemy->update(m_testMap.getBuildings(), m_testMap, m_weather);
+		m_player.weaponInteration(enemy.get());
 	}
+	m_player.weaponUpdate(t_deltaTime);
+	summonEnemy();
+	m_weather.update(t_deltaTime);
 
 	if (m_exitGame) {
 		m_window.close();
 	}
-	summonEnemy();
-	m_weather.update(t_deltaTime);
 }
 
 /// <summary>
@@ -111,8 +113,9 @@ void Game::render() {
 	}
 	m_uiPanel.render(m_window);
 	m_weather.render();
-	m_techTreeMenu.render();
 	m_player.render(m_window);
+	m_player.weaponRender(m_window);
+	m_techTreeMenu.render();
 
 	m_window.display();
 }

@@ -137,6 +137,7 @@
     <ClInclude Include="..\Header\Enemy.h" />
     <ClInclude Include="..\Header\Game.h" />
     <ClInclude Include="..\Header\Globals.h" />
+    <ClInclude Include="..\Header\GravitationalVortex.h" />
     <ClInclude Include="..\Header\Player.h" />
     <ClInclude Include="..\Header\TechTree.h" />
     <ClInclude Include="..\Header\TextureManager.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="..\Header\TileMap.h" />
     <ClInclude Include="..\Header\TileType.h" />
     <ClInclude Include="..\Header\UIPanel.h" />
+    <ClInclude Include="..\Header\Weapon.h" />
     <ClInclude Include="..\Header\Weather.h" />
   </ItemGroup>
   <ItemGroup>

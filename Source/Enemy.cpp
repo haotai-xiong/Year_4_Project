@@ -4,9 +4,15 @@ void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, Ti
     if (!m_target) {
         findClosestBuilding(t_buildings);
     }
-    if (m_target) {
+    if (m_target && !m_underGravity) {
         moveToTarget(t_map, t_weather);
         detectTower(t_map);
+    }
+    else {
+        std::cout << gravityEffectTimer.getElapsedTime().asSeconds() << std::endl;
+        moveToGravityCenter(t_map, t_weather);
+        detectTower(t_map);
+        escapeGravity();
     }
 }
 
@@ -38,14 +44,11 @@ void Enemy::moveToTarget(TileMap& t_map, Weather& t_weather) {
     if (length != 0) {
         direction /= length; // Normalize the direction vector
 
-        // Check for obstacles in the current direction
         if (rayIntersectsObstacle(direction, m_viewDistance, t_map)) {
-            // Try to find a clear path by rotating the direction vector
-            const float rotationStep = 45; // Degrees to rotate at each step
+            const float rotationStep = 45;
             bool pathFound = false;
 
             for (float angle = rotationStep; angle < 360; angle += rotationStep) {
-                // Rotate direction clockwise and counter-clockwise
                 sf::Vector2f newDirections[2] = {
                     rotateVector(direction, angle),
                     rotateVector(direction, -angle)
@@ -72,6 +75,44 @@ void Enemy::moveToTarget(TileMap& t_map, Weather& t_weather) {
     }
 }
 
+void Enemy::moveToGravityCenter(TileMap& t_map, Weather& t_weather)
+{
+    sf::Vector2f direction = m_gravityCenter - m_sprite.getPosition();
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    if (length != 0) {
+        direction /= length; // Normalize the direction vector
+
+        if (rayIntersectsObstacle(direction, m_viewDistance, t_map)) {
+            const float rotationStep = 45;
+            bool pathFound = false;
+
+            for (float angle = rotationStep; angle < 360; angle += rotationStep) {
+                sf::Vector2f newDirections[2] = {
+                    rotateVector(direction, angle),
+                    rotateVector(direction, -angle)
+                };
+
+                for (const auto& newDir : newDirections) {
+                    if (!rayIntersectsObstacle(newDir, m_viewDistance, t_map)) {
+                        direction = newDir;
+                        pathFound = true;
+                        break;
+                    }
+                }
+                if (pathFound) break;
+            }
+        }
+
+        // Move in the chosen direction
+        if (t_weather.getCurrentWeather() == Weather::Type::Rainy) {
+            m_sprite.move(direction * m_speed * 0.5f);
+        }
+        else {
+            m_sprite.move(direction * m_speed);
+        }
+    }
+}
 
 bool Enemy::rayIntersectsObstacle(const sf::Vector2f& t_direction, float t_distance, TileMap& t_map) {
     sf::FloatRect bounds = m_sprite.getGlobalBounds();
@@ -104,5 +145,13 @@ void Enemy::detectTower(TileMap& t_map)
         if (tower && distance(tower->pos(), m_sprite.getPosition()) < tower->MAXRADIUS()) {
             alive = false;
         }
+    }
+}
+
+void Enemy::escapeGravity()
+{
+    if (gravityEffectTimer.getElapsedTime().asSeconds() > 6.0f) {
+        m_underGravity = false;
+        gravityEffectTimer.restart();
     }
 }
