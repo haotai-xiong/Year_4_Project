@@ -150,8 +150,7 @@ void Enemy::detectTower(TileMap& t_map)
 
 void Enemy::escapeGravity()
 {
-    if (gravityEffectTimer.getElapsedTime().asSeconds() > 6.0f) {
+    if (gravityEffectTimer.getElapsedTime().asSeconds() > 4.0f) {
         m_underGravity = false;
-        gravityEffectTimer.restart();
     }
 }

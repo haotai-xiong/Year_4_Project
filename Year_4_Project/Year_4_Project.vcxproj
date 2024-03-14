@@ -139,6 +139,8 @@
     <ClInclude Include="..\Header\Globals.h" />
     <ClInclude Include="..\Header\GravitationalVortex.h" />
     <ClInclude Include="..\Header\Player.h" />
+    <ClInclude Include="..\Header\Starfield.h" />
+    <ClInclude Include="..\Header\StartMenu.h" />
     <ClInclude Include="..\Header\TechTree.h" />
     <ClInclude Include="..\Header\TextureManager.h" />
     <ClInclude Include="..\Header\Tile.h" />

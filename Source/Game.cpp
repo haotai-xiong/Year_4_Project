@@ -9,8 +9,10 @@ Game::Game() :
 	m_window{ sf::VideoMode{ 1000U, 1000U, 32U }, "SFML Game" },
 	m_exitGame{false}, //when true game will exit
 	m_weather(m_window),
-	m_techTreeMenu(m_window)
+	m_techTreeMenu(m_window),
+	m_gameState(Game::State::Menu)
 {
+	startMenuInit();
 }
 
 /// <summary>
@@ -85,6 +87,71 @@ void Game::processKeys(sf::Event t_event) {
 /// </summary>
 /// <param name="t_deltaTime">time interval per frame</param>
 void Game::update(sf::Time t_deltaTime) {
+	switch (m_gameState)
+	{
+	case State::Menu:
+		MenuUpdate(t_deltaTime);
+		break;
+	case State::Game:
+		GameUpdate(t_deltaTime);
+		break;
+	case State::Win:
+		break;
+	case State::Lose:
+		break;
+	default:
+		break;
+	}
+}
+
+/// <summary>
+/// draw the frame and then switch buffers
+/// </summary>
+void Game::render() {
+	m_window.clear(sf::Color::Black);
+
+	switch (m_gameState)
+	{
+	case State::Menu:
+		MenuRender();
+		break;
+	case State::Game:
+		GameRender();
+		break;
+	case State::Win:
+		break;
+	case State::Lose:
+		break;
+	default:
+		break;
+	}
+
+	m_window.display();
+}
+
+void Game::summonEnemy()
+{
+	if (m_clock.getElapsedTime().asSeconds() >= summonInterval) {
+		int enemyNumber = wasteAmount / 50;
+		for (int i = 0; i < enemyNumber; i++) {
+			enemies.push_back(std::make_unique<Enemy>());
+		}
+		m_clock.restart();
+	}
+}
+
+void Game::MenuUpdate(sf::Time t_deltaTime)
+{
+	m_startMenu.update(m_window);
+}
+
+void Game::MenuRender()
+{
+	m_startMenu.render(m_window);
+}
+
+void Game::GameUpdate(sf::Time t_deltaTime)
+{
 	m_player.update(t_deltaTime);
 	m_uiPanel.update(m_window);
 	m_testMap.update(m_weather);
@@ -101,12 +168,8 @@ void Game::update(sf::Time t_deltaTime) {
 	}
 }
 
-/// <summary>
-/// draw the frame and then switch buffers
-/// </summary>
-void Game::render() {
-	m_window.clear(sf::Color::Black);
-
+void Game::GameRender()
+{
 	m_testMap.render(m_window);
 	for (auto& enemy : enemies) {
 		enemy->render(m_window);
@@ -116,17 +179,10 @@ void Game::render() {
 	m_player.render(m_window);
 	m_player.weaponRender(m_window);
 	m_techTreeMenu.render();
-
-	m_window.display();
 }
 
-void Game::summonEnemy()
+void Game::startMenuInit()
 {
-	if (m_clock.getElapsedTime().asSeconds() >= summonInterval) {
-		int enemyNumber = wasteAmount / 50;
-		for (int i = 0; i < enemyNumber; i++) {
-			enemies.push_back(std::make_unique<Enemy>());
-		}
-		m_clock.restart();
-	}
+	m_startMenu.addItem("play_button", [&]() { m_gameState = Game::State::Game; });
+	m_startMenu.addItem("exit_button", [&]() { m_window.close(); });
 }

@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <sstream>
 #include <random>
+#include <numbers>
 
 class TextureManager {
 public:
@@ -29,6 +30,10 @@ public:
         // fonts
         loadFont("cheril", "../Assets/Project/Font/CHERL.TTF");
         loadFont("cherii", "../Assets/Project/Font/CHERI.TTF");
+        // menu
+        loadTexture("menu_background", "../Assets/Project/Menu/background.png");
+        loadTexture("play_button", "../Assets/Project/Menu/play.png");
+        loadTexture("exit_button", "../Assets/Project/Menu/exit.png");
     }
     ~TextureManager() {}
 
