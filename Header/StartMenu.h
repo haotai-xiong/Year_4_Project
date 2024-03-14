@@ -7,6 +7,7 @@ struct MenuItem {
     sf::Text text;
     sf::Sprite buttonSprite;
     std::function<void()> action;
+    float animationTime = 0.0f;
 
     MenuItem(const sf::Font& font, const std::string& title, const std::function<void()>& action)
         : action(action) {
@@ -34,7 +35,7 @@ public:
         items.back().buttonSprite.setPosition(sf::Vector2f(500.0f, y));
     }
 
-    void update(sf::RenderWindow& t_window) {
+    void update(sf::RenderWindow& t_window, sf::Time& t_deltaTime) {
         sf::Vector2f mousePos = t_window.mapPixelToCoords(sf::Mouse::getPosition(t_window));
         for (auto& item : items) {
             // hover effect - change text color
@@ -50,9 +51,16 @@ public:
             }
             */
             if (item.buttonSprite.getGlobalBounds().contains(mousePos)) {
+                item.animationTime += t_deltaTime.asSeconds();
+                float scale = 1.0f + 0.05f * std::sin(item.animationTime * 2.0f);
+                item.buttonSprite.setScale(scale, scale);
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     item.action();
                 }
+            }
+            else {
+                item.buttonSprite.setScale(1.0f, 1.0f);
+                item.animationTime = 0.0f;
             }
         }
 

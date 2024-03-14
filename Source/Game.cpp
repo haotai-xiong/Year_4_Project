@@ -142,7 +142,7 @@ void Game::summonEnemy()
 
 void Game::MenuUpdate(sf::Time t_deltaTime)
 {
-	m_startMenu.update(m_window);
+	m_startMenu.update(m_window, t_deltaTime);
 }
 
 void Game::MenuRender()
