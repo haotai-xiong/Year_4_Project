@@ -18,7 +18,7 @@ public:
         buttonText.setPosition(915, 25);
 
         // Setup the menu background
-        menu.setSize(sf::Vector2f(300, 400));
+        menu.setSize(sf::Vector2f(400, 400));
         menu.setPosition(0, 100);
         menu.setFillColor(sf::Color(100, 100, 100, 192));
 
@@ -31,6 +31,7 @@ public:
 
         // Weapon button init
         weaponButtonInit();
+        requirementsInit();
     }
 
     void update(sf::Event event, Player& t_player) {
@@ -40,17 +41,70 @@ public:
                     menuVisible = !menuVisible;
                 }
                 else if (baseGunButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    t_player.setWeaponLevel(1); // test purpose
                     t_player.setCurrentWeapon(Weapon::Type::baseGun);
                     menuVisible = !menuVisible;
                 }
-                else if (gravityGunButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                else if (gravityGunButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)
+                    && t_player.getWeaponLevel() == 1) {
+                    t_player.setWeaponLevel(2);
                     t_player.setCurrentWeapon(Weapon::Type::gravityGun);
                     menuVisible = !menuVisible;
                 }
-                else if (laserGunButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                else if (laserGunButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)
+                    && t_player.getWeaponLevel() == 1) {
+                    t_player.setWeaponLevel(2);
                     t_player.setCurrentWeapon(Weapon::Type::laserGun);
                     menuVisible = !menuVisible;
                 }
+                else if (heavyLaserGunButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)
+                    && t_player.getWeaponLevel() == 2) {
+                        t_player.setWeaponLevel(3);
+                    t_player.setCurrentWeapon(Weapon::Type::heavyLaserGun);
+                    menuVisible = !menuVisible;
+                }
+            }
+        }
+
+        if (event.type == sf::Event::MouseMoved) {
+            if (gravityGunButton.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+                showRequirementWindow = true;
+                requirementWindow.setPosition(event.mouseMove.x + 10.0f, event.mouseMove.y + 10.0f);
+                woodText.setString("Wood: " + std::to_string(requirements["gravityGun"][0]));
+                woodText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 5.0f);
+                wasteText.setString("Waste Less Than: " + std::to_string(requirements["gravityGun"][1]));
+                wasteText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 25.0f);
+                enemyKilledText.setString("Enemy Killed: >" + std::to_string(requirements["gravityGun"][2]));
+                enemyKilledText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 45.0f);
+                prosperityText.setString("Prosperity: >" + std::to_string(requirements["gravityGun"][3]));
+                prosperityText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 65.0f);
+            }
+            else if (laserGunButton.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+                showRequirementWindow = true;
+                requirementWindow.setPosition(event.mouseMove.x + 10.0f, event.mouseMove.y + 10.0f);
+                woodText.setString("Wood: " + std::to_string(requirements["laserGun"][0]));
+                woodText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 5.0f);
+                wasteText.setString("Waste Less Than: " + std::to_string(requirements["laserGun"][1]));
+                wasteText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 25.0f);
+                enemyKilledText.setString("Enemy Killed: >" + std::to_string(requirements["laserGun"][2]));
+                enemyKilledText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 45.0f);
+                prosperityText.setString("Prosperity: >" + std::to_string(requirements["laserGun"][3]));
+                prosperityText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 65.0f);
+            }
+            else if (heavyLaserGunButton.getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+                showRequirementWindow = true;
+                requirementWindow.setPosition(event.mouseMove.x + 10.0f, event.mouseMove.y + 10.0f);
+                woodText.setString("Wood: " + std::to_string(requirements["heavyLaserGun"][0]));
+                woodText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 5.0f);
+                wasteText.setString("Waste Less Than: " + std::to_string(requirements["heavyLaserGun"][1]));
+                wasteText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 25.0f);
+                enemyKilledText.setString("Enemy Killed: >" + std::to_string(requirements["heavyLaserGun"][2]));
+                enemyKilledText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 45.0f);
+                prosperityText.setString("Prosperity: >" + std::to_string(requirements["heavyLaserGun"][3]));
+                prosperityText.setPosition(requirementWindow.getPosition().x + 5.0f, requirementWindow.getPosition().y + 65.0f);
+            }
+            else {
+                showRequirementWindow = false;
             }
         }
     }
@@ -67,6 +121,16 @@ public:
             m_window.draw(gravityGunText);
             m_window.draw(laserGunButton);
             m_window.draw(laserGunText);
+            m_window.draw(heavyLaserGunButton);
+            m_window.draw(heavyLaserGunText);
+            if (showRequirementWindow)
+            {
+                m_window.draw(requirementWindow);
+                m_window.draw(woodText);
+                m_window.draw(wasteText);
+                m_window.draw(enemyKilledText);
+                m_window.draw(prosperityText);
+            }
         }
     }
 
@@ -104,6 +168,45 @@ public:
         laserGunText.setOrigin(sf::Vector2f(laserGunText.getGlobalBounds().width / 2.0f, laserGunText.getGlobalBounds().height / 2.0f));
         laserGunText.setFillColor(sf::Color::Black);
         laserGunText.setPosition(250.0f, 247.5f);
+        // Heavy Laser Gun
+        heavyLaserGunButton.setSize(sf::Vector2f(150.0f, 30.0f));
+        heavyLaserGunButton.setOrigin(sf::Vector2f(heavyLaserGunButton.getGlobalBounds().width / 2.0f, heavyLaserGunButton.getGlobalBounds().height / 2.0f));
+        heavyLaserGunButton.setPosition(250.0f, 350.0f);
+        heavyLaserGunButton.setFillColor(sf::Color(255, 255, 255, 150));
+        heavyLaserGunText.setFont(m_textureManager.getFont("cherii"));
+        heavyLaserGunText.setString("Heavy Laser Gun");
+        heavyLaserGunText.setCharacterSize(15);
+        heavyLaserGunText.setOrigin(sf::Vector2f(heavyLaserGunText.getGlobalBounds().width / 2.0f, heavyLaserGunText.getGlobalBounds().height / 2.0f));
+        heavyLaserGunText.setFillColor(sf::Color::Black);
+        heavyLaserGunText.setPosition(250.0f, 347.5f);
+        // requirement text
+        requirementWindow.setSize(sf::Vector2f(220.0f, 100.0f));
+        requirementWindow.setFillColor(sf::Color(58, 57, 57, 255));
+        woodText.setFont(m_textureManager.getFont("cherii"));
+        woodText.setCharacterSize(20);
+        woodText.setFillColor(sf::Color::Black);
+        wasteText.setFont(m_textureManager.getFont("cherii"));
+        wasteText.setCharacterSize(20);
+        wasteText.setFillColor(sf::Color::Black);
+        enemyKilledText.setFont(m_textureManager.getFont("cherii"));
+        enemyKilledText.setCharacterSize(20);
+        enemyKilledText.setFillColor(sf::Color::Black);
+        prosperityText.setFont(m_textureManager.getFont("cherii"));
+        prosperityText.setCharacterSize(20);
+        prosperityText.setFillColor(sf::Color::Black);
+    }
+
+    // requirements init
+    void requirementsInit() {
+        // gravity gun
+        std::vector<int> gravityReq{ 5000, 500, 50, 0 };
+        requirements["gravityGun"] = gravityReq;
+        // laser gun
+        std::vector<int> laserReq{ 3000, 600, 20, 0 };
+        requirements["laserGun"] = laserReq;
+        // heavy laser gun
+        std::vector<int> heavyLaserReq{ 10000, 200, 100, 300 };
+        requirements["heavyLaserGun"] = heavyLaserReq;
     }
 
 private:
@@ -122,6 +225,17 @@ private:
     sf::Text gravityGunText;
     sf::RectangleShape laserGunButton;
     sf::Text laserGunText;
+    sf::RectangleShape heavyLaserGunButton;
+    sf::Text heavyLaserGunText;
+
+    // small hover-ish requirement values
+    bool showRequirementWindow = false;
+    sf::RectangleShape requirementWindow;
+    sf::Text woodText;
+    sf::Text wasteText;
+    sf::Text enemyKilledText;
+    sf::Text prosperityText;
+    std::unordered_map<std::string, std::vector<int>> requirements; // >= wood resource | <= waste amount | >= enemyKilled | >= prosperity
 };
 
 #endif // !TECHTREE_H

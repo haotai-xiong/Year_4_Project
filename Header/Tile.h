@@ -7,6 +7,7 @@ class Tile {
 public:
 	Tile(sf::Vector2i t_pos, TileType t_type);
 	sf::Vector2i getPos();
+	sf::Sprite getSprite();
 	TileType getType() const;
 	void setType(TileType t_type);
 	void render(sf::RenderWindow& t_window) const;

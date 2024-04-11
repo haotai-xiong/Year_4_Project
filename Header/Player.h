@@ -33,6 +33,8 @@ private:
 	BaseGun m_baseGun;
 	GravityGun m_gravityGun;
 	LaserGun m_laserGun;
+	HeavyLaserGun m_heavyLaserGun;
+	int m_weaponLevel = 1;
 
 public:
 	Player(); // default constructor
@@ -51,6 +53,7 @@ public:
 
 	void update(const sf::Time& deltaTime);
 	void render(sf::RenderWindow& t_window);
+	void processEvent(sf::Event& t_event);
 	void indexUpdate();
 	void weaponUpdate(const sf::Time& deltaTime);
 	void weaponInteration(Enemy* t_enemy);
@@ -64,6 +67,8 @@ public:
 	float& getFrameIncrement() { return m_frameIncrement; }
 	bool& isMoving() { return m_moving; }
 	void setCurrentWeapon(Weapon::Type t_weapon) { m_currentWeapon = t_weapon; }
+	void setWeaponLevel(int t_level) { m_weaponLevel = t_level; }
+	int getWeaponLevel() { return m_weaponLevel; }
 };
 
 #endif // !PLAYER_H

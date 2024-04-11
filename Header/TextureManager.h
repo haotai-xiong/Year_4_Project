@@ -12,6 +12,8 @@
 #include <sstream>
 #include <random>
 #include <numbers>
+#include <fstream>
+#include <sstream>
 
 class TextureManager {
 public:
@@ -27,6 +29,7 @@ public:
         loadTexture("projectile", "../Assets/Project/Building/Projectile.png");
         // enemy
         loadTexture("Enemy_Sample", "../Assets/Project/Character/enemy_sample.png");
+        loadTexture("Worker_Sample", "../Assets/Project/Character/worker_sample.png");
         // fonts
         loadFont("cheril", "../Assets/Project/Font/CHERL.TTF");
         loadFont("cherii", "../Assets/Project/Font/CHERI.TTF");

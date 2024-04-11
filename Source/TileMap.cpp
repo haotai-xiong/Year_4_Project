@@ -15,6 +15,7 @@ TileMap::TileMap() {
 		int randY = rand() % height_Num;
 
 		tiles[randY][randX].setType(TileType::Wood);
+		m_woods.push_back(tiles[randY][randX].getSprite().getPosition());
 	}
 }
 
@@ -35,7 +36,7 @@ void TileMap::update(Weather& t_weather) {
 	for (auto& building : m_buildings) {
 		auto* factory = dynamic_cast<Factory*>(building.get());
 		if (factory) {
-			factory->updateWoodCollection(t_weather);
+			// factory->updateWoodCollection(t_weather);
 		}
 
 		auto* tower = dynamic_cast<Tower*>(building.get());
@@ -46,7 +47,7 @@ void TileMap::update(Weather& t_weather) {
 		auto* landfill = dynamic_cast<Landfill*>(building.get());
 		if (landfill) {
 			landfill->woodToEnergy();
-			landfill->metalToEnergy();
+			// landfill->metalToEnergy();
 		}
 	}
 }

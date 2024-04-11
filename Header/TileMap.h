@@ -14,7 +14,7 @@ public:
     void update(Weather& t_weather);
     
     template<typename T>
-    void addBuilding(const sf::Vector2f& t_pos, TileType tileType, const std::string& textureName) {
+    void addBuilding(const sf::Vector2f t_pos, TileType tileType, const std::string textureName) {
         m_buildings.push_back(std::make_unique<T>(worldToTileCoordPos(t_pos), textureName));
         setTile(worldToTileCoordIndex(t_pos), tileType);
     }
@@ -32,6 +32,7 @@ public:
 
     void updateWoodConnections(); 
     const std::vector<std::unique_ptr<Building>>& getBuildings() const { return m_buildings; }
+    const std::vector<sf::Vector2f>& getWoods() const { return m_woods; }
     bool isWalkable(const sf::Vector2f& position);
 
 
@@ -43,6 +44,7 @@ private:
 	int height_Num = SCREEN_HEIGHT / TILE_SIZE;
 
     std::vector<std::unique_ptr<Building>> m_buildings;
+    std::vector<sf::Vector2f> m_woods;
 };
 
 #endif

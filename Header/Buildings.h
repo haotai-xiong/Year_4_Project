@@ -5,8 +5,7 @@
 
 class Building {
 public:
-    Building(const sf::Vector2f& t_pos, std::string t_textureName) : m_pos(t_pos), m_weakLevel(0) {}
-
+    Building(const sf::Vector2f& t_pos, std::string t_textureName) : m_pos(t_pos), m_weakLevel(0), m_textureName(t_textureName) {}
     virtual ~Building() {}
 
     sf::Vector2f pos() const { return m_pos; }
@@ -14,6 +13,7 @@ public:
     sf::Sprite sprite() const { return m_sprite; }
     int weakLevel() const { return m_weakLevel; }
     void weakLevel(int t_level) { m_weakLevel = t_level; }
+    std::string textureName() const { return m_textureName; }
 
     virtual void render(sf::RenderWindow& t_window) const {
         t_window.draw(m_sprite);
@@ -21,6 +21,7 @@ public:
 
 protected:
     sf::Vector2f m_pos;
+    std::string m_textureName;
     sf::Sprite m_sprite;
     int m_weakLevel;
 };
@@ -57,9 +58,9 @@ public:
         hasWoodConnection = false;
     }
 
-    void updateWoodCollection(Weather& t_weather) const {
+    void updateWoodCollection() const {
         if (hasWoodConnection) {
-            if (t_weather.getCurrentWeather() == Weather::Type::Thunder) {
+            if (eventState == Event::Thunder) {
                 woodAmount += woodCollectRateThunder;
                 wasteAmount += wasteGenerateRate;
             }
@@ -75,6 +76,8 @@ public:
         }
     }
 
+    bool workerAssigned = false;
+
 private:
     bool hasWoodConnection = false;
     static constexpr int woodCollectRate = 2;
@@ -87,24 +90,32 @@ public:
     Landfill(const sf::Vector2f& t_pos, std::string t_textureName) : Building(t_pos, t_textureName) {
         m_sprite.setTexture(m_textureManager.getTexture(t_textureName));
         resizeToTileSize(m_sprite);
+        m_sprite.setColor(sf::Color(m_sprite.getColor().r, m_sprite.getColor().g, m_sprite.getColor().b, 0));
         m_sprite.setPosition(m_pos);
         m_weakLevel = 4;
     }
 
     void woodToEnergy() {
-        if (woodAmount / woodConsumeRate > 0)
-        {
-            woodAmount -= woodConsumeRate;
-            energyAmount += energyGenerateRate;
+        if (woodAmount / woodConsumeRate > 0) {
+            m_sprite.setColor(sf::Color(m_sprite.getColor().r, m_sprite.getColor().g, m_sprite.getColor().b, 25.5 * landfillClock.getElapsedTime().asSeconds()));
+            if (landfillClock.getElapsedTime().asSeconds() >= 10.0f) {
+                landfillClock.restart();
+                woodAmount -= woodConsumeRate;
+                energyAmount += energyGenerateRate;
 
-            if (0 == energyAmount % 100) {
-                std::cout << "Energy Amount " << energyAmount << std::endl;
+                if (0 == energyAmount % 100) {
+                    std::cout << "Energy Amount " << energyAmount << std::endl;
+                }
             }
+        }
+        else {
+            m_sprite.setColor(sf::Color(m_sprite.getColor().r, m_sprite.getColor().g, m_sprite.getColor().b, 255));
         }
     }
 
+    /*
     void metalToEnergy() {
-        if (metalAmount / metalConsumeRate > 0)
+        if (metalAmount / woodTriggerNumber > 0)
         {
             metalAmount -= metalConsumeRate;
             energyAmount += energyGenerateRate;
@@ -114,11 +125,13 @@ public:
             }
         }
     }
+    */
 
 private:
-    static constexpr int woodConsumeRate = 500;
+    static constexpr int woodConsumeRate = 300;
     static constexpr int metalConsumeRate = 500;
     static constexpr int energyGenerateRate = 100;
+    sf::Clock landfillClock;
 };
 
 class RecyclingCenter : public Building {
@@ -129,6 +142,13 @@ public:
         m_sprite.setPosition(m_pos);
         m_weakLevel = 3;
     }
+
+    void wasteToEnegy() {
+
+    }
+
+private:
+    sf::Clock recyclock;
 };
 
 class Plant : public Building {
@@ -157,6 +177,7 @@ public:
         resizeToTileSize(m_sprite);
         m_sprite.setPosition(m_pos);
         m_weakLevel = 0;
+        woodAmount -= m_woodCost;
 
         m_emitter.setRadius(m_radius); 
         m_emitter.setOrigin(m_radius, m_radius);
@@ -180,13 +201,14 @@ public:
         }
     }
 
-    float MAXRADIUS() { return m_MAXRADIUS; }
+    float MAXRADIUS() const { return m_MAXRADIUS; }
 
 private:
     sf::CircleShape m_emitter;
     float m_radius = 1.0f;
     float growthRate = 0.01f;
     float m_MAXRADIUS = 80.0f;
+    int m_woodCost = 1000;
 };
 
 #endif

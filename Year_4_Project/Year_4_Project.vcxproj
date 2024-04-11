@@ -135,10 +135,12 @@
   <ItemGroup>
     <ClInclude Include="..\Header\Buildings.h" />
     <ClInclude Include="..\Header\Enemy.h" />
+    <ClInclude Include="..\Header\EventUI.h" />
     <ClInclude Include="..\Header\Game.h" />
     <ClInclude Include="..\Header\Globals.h" />
     <ClInclude Include="..\Header\GravitationalVortex.h" />
     <ClInclude Include="..\Header\Player.h" />
+    <ClInclude Include="..\Header\SaveData.h" />
     <ClInclude Include="..\Header\Starfield.h" />
     <ClInclude Include="..\Header\StartMenu.h" />
     <ClInclude Include="..\Header\TechTree.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="..\Header\UIPanel.h" />
     <ClInclude Include="..\Header\Weapon.h" />
     <ClInclude Include="..\Header\Weather.h" />
+    <ClInclude Include="..\Header\Worker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Enemy.cpp" />

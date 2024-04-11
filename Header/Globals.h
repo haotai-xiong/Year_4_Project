@@ -57,7 +57,29 @@ inline int woodAmount = 0;
 inline int metalAmount = 0;
 inline int energyAmount = 0;
 inline float wasteAmount = 0.0f;
-inline int prosperity = 0;
+inline int prosperity = 300;
 inline float summonInterval = 10.0f;
+inline int enemyKilled = 999;
+inline bool haveSavedData = false;
+
+enum class Event {
+    None,
+    EnemyRaging,
+    Rainy,
+    Thunder,
+    Count
+};
+
+inline Event& operator++(Event& t_event) {
+    t_event = static_cast<Event>(static_cast<int>(t_event) + 1);
+
+    if (t_event == Event::Count) {
+        t_event = Event::None;
+    }
+
+    return t_event;
+}
+
+inline Event eventState = Event::None;
 
 #endif // !GLOBALS_HPP

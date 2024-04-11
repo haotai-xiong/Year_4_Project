@@ -5,13 +5,8 @@
 
 class Weather {
 public:
-    enum class Type {
-        Sunny,
-        Rainy,
-        Thunder
-    };
 
-    Weather(sf::RenderWindow& renderWindow) : window(renderWindow), distribution(0, renderWindow.getSize().x), currentWeather(Type::Thunder)
+    Weather(sf::RenderWindow& renderWindow) : window(renderWindow), distribution(0, renderWindow.getSize().x)
     {
         // Initialize rain
         for (int i = 0; i < rainLimit; ++i) {
@@ -26,21 +21,17 @@ public:
         thunderOverlay.setFillColor(sf::Color(255, 255, 255, 180));
     }
 
-    void setWeather(Type type) {
-        currentWeather = type;
-    }
-
     void update(sf::Time deltaTime) {
-        if (currentWeather == Type::Rainy) {
+        if (eventState == Event::Rainy) {
             updateRain();
         }
-        else if (currentWeather == Type::Thunder && !isThundering) {
-            sf::Time tempWaitTime = sf::seconds(std::rand() / 10 + 1);
+        else if (eventState == Event::Thunder && !isThundering) {
+            sf::Time tempWaitTime = sf::seconds(std::rand() / static_cast<float>(10) + 1);
             if (thunderClock.getElapsedTime() >= tempWaitTime) {
                 startThunder(); // Start thunder effect
             }
         }
-        else if (currentWeather == Type::Thunder && isThundering) {
+        else if (eventState == Event::Thunder && isThundering) {
             if (thunderClock.getElapsedTime() >= thunderDuration) {
                 isThundering = false; // End thunder effect
             }
@@ -48,30 +39,17 @@ public:
     }
 
     void render() {
-        if (currentWeather == Type::Rainy) {
+        if (eventState == Event::Rainy) {
             for (auto& rainDrop : rainDrops) {
                 window.draw(rainDrop);
             }
         }
-        else if (currentWeather == Type::Thunder && isThundering) {
+        else if (eventState == Event::Thunder && isThundering) {
             window.draw(thunderOverlay);
         }
-        // No explicit render for Sunny as it might just be the absence of effects or a simple sprite
     }
-
-    void switchWeather() {
-        if (currentWeather == Type::Rainy) {
-            currentWeather = Type::Thunder;
-        }
-        else if (currentWeather == Type::Thunder) {
-            currentWeather = Type::Rainy;
-        }
-    }
-
-    Type getCurrentWeather() const { return currentWeather; }
 
 private:
-    Type currentWeather;
     sf::RenderWindow& window;
 
     // Rain effect members
@@ -85,9 +63,6 @@ private:
     sf::Clock thunderClock;
     sf::Time thunderDuration = sf::seconds(0.2f);
     sf::RectangleShape thunderOverlay;
-
-    // Sunny effect members
-    // no clue atm
 
     void updateRain() {
         for (auto& rainDrop : rainDrops) {

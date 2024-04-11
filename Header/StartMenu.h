@@ -38,18 +38,6 @@ public:
     void update(sf::RenderWindow& t_window, sf::Time& t_deltaTime) {
         sf::Vector2f mousePos = t_window.mapPixelToCoords(sf::Mouse::getPosition(t_window));
         for (auto& item : items) {
-            // hover effect - change text color
-            /*
-            if (item.text.getGlobalBounds().contains(mousePos)) {
-                item.text.setFillColor(sf::Color::Red);
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    item.action();
-                }
-            }
-            else {
-                item.text.setFillColor(sf::Color::White);
-            }
-            */
             if (item.buttonSprite.getGlobalBounds().contains(mousePos)) {
                 item.animationTime += t_deltaTime.asSeconds();
                 float scale = 1.0f + 0.05f * std::sin(item.animationTime * 2.0f);

@@ -16,10 +16,12 @@ public:
     }
 
     void activate(const sf::Vector2f& t_position) {
-        position = t_position;
-        shape.setPosition(position);
-        isActive = true;
-        animationClock.restart();
+        if (!isActive) {
+            position = t_position;
+            shape.setPosition(position);
+            isActive = true;
+            animationClock.restart();
+        }
     }
 
     void update() {

@@ -34,3 +34,8 @@ void Tile::render(sf::RenderWindow& t_window) const {
 	// t_window.draw(m_rect);
 	t_window.draw(m_sprite);
 }
+
+sf::Sprite Tile::getSprite()
+{
+	return m_sprite;
+}

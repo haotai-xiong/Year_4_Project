@@ -66,8 +66,11 @@ void Enemy::moveToTarget(TileMap& t_map, Weather& t_weather) {
         }
 
         // Move in the chosen direction
-        if (t_weather.getCurrentWeather() == Weather::Type::Rainy) {
+        if (eventState == Event::Rainy) {
             m_sprite.move(direction * m_speed * 0.5f);
+        }
+        else if (eventState == Event::EnemyRaging) {
+            m_sprite.move(direction * m_speed * 2.0f);
         }
         else {
             m_sprite.move(direction * m_speed);
@@ -105,8 +108,9 @@ void Enemy::moveToGravityCenter(TileMap& t_map, Weather& t_weather)
         }
 
         // Move in the chosen direction
-        if (t_weather.getCurrentWeather() == Weather::Type::Rainy) {
-            m_sprite.move(direction * m_speed * 0.5f);
+        // if (t_weather.getCurrentWeather() == Weather::Type::Rainy) {
+        if (eventState == Event::EnemyRaging) {
+            m_sprite.move(direction * m_speed * 2.0f);
         }
         else {
             m_sprite.move(direction * m_speed);

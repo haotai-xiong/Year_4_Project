@@ -2,6 +2,7 @@
 #define UIPANEL_H
 
 #include "Enemy.h"
+#include "Worker.h"
 
 class UIPanel {
 public:
@@ -33,7 +34,7 @@ public:
 
     void update(const sf::RenderWindow& t_window);
     void render(sf::RenderWindow& t_window);
-    void processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, std::vector<std::unique_ptr<Enemy>>& t_enemies);
+    void processEvent(sf::Event& t_event, sf::RenderWindow& t_window, TileMap& t_map, std::vector<std::unique_ptr<Enemy>>& t_enemies, std::vector<std::unique_ptr<Worker>>& t_workers);
 
     void handleMouseClick(const sf::Vector2f& mousePos);
     BuildingOption getSelectedOption() const { return selectedOption; }

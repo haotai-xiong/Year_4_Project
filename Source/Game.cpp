@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <iostream>
 
 /// <summary>
 /// default constructor
@@ -14,15 +13,6 @@ Game::Game() :
 {
 	startMenuInit();
 }
-
-/// <summary>
-/// default destructor we didn't dynamically allocate anything
-/// so we don't need to free it, but mthod needs to be here
-/// </summary>
-Game::~Game()
-{
-}
-
 
 /// <summary>
 /// main game loop
@@ -57,14 +47,16 @@ void Game::processEvents() {
 	while (m_window.pollEvent(newEvent)) {
 		// window message 
 		if ( sf::Event::Closed == newEvent.type) {
+			saveGameDataToFile();
 			m_exitGame = true;
 		}
 		// user pressed a key
 		if (sf::Event::KeyPressed == newEvent.type) {
 			processKeys(newEvent);
 		}
-		m_uiPanel.processEvent(newEvent, m_window, m_testMap, enemies);
+		m_uiPanel.processEvent(newEvent, m_window, m_testMap, enemies, workers);
 		m_techTreeMenu.update(newEvent, m_player);
+		m_player.processEvent(newEvent);
 	}
 }
 
@@ -75,10 +67,16 @@ void Game::processEvents() {
 /// <param name="t_event">key press event</param>
 void Game::processKeys(sf::Event t_event) {
 	if (sf::Keyboard::Escape == t_event.key.code) {
+		saveGameDataToFile();
 		m_exitGame = true;
 	}
 	else if (sf::Keyboard::C == t_event.key.code) {
-		m_weather.switchWeather();
+		++eventState;
+		m_eventText.show();
+	}
+	else if (sf::Keyboard::R == t_event.key.code) {
+		std::filesystem::remove(m_fileName);
+		saveGameData(m_player);
 	}
 }
 
@@ -152,6 +150,21 @@ void Game::MenuRender()
 
 void Game::GameUpdate(sf::Time t_deltaTime)
 {
+	if (fileExists() && !m_dataLoaded) {
+		m_dataLoaded = true;
+		m_currentData = loadSavedData();
+		m_player.setPosition(m_currentData.playerPos);
+		for (int i = 0; i < m_currentData.buildings_size; i++) {
+			if (m_currentData.buildings_type[i] == "Factory") {
+				m_testMap.addBuilding<Factory>(m_currentData.buildings_pos[i], stringToTileType(m_currentData.buildings_type[i]), m_currentData.buildings_texture[i]);
+				workers.push_back(std::make_unique<Worker>());
+			}
+			else if (m_currentData.buildings_type[i] == "Tower") {
+				m_testMap.addBuilding<Tower>(m_currentData.buildings_pos[i], stringToTileType(m_currentData.buildings_type[i]), m_currentData.buildings_texture[i]);
+			}
+		}
+	}
+
 	m_player.update(t_deltaTime);
 	m_uiPanel.update(m_window);
 	m_testMap.update(m_weather);
@@ -159,9 +172,13 @@ void Game::GameUpdate(sf::Time t_deltaTime)
 		enemy->update(m_testMap.getBuildings(), m_testMap, m_weather);
 		m_player.weaponInteration(enemy.get());
 	}
+	for (auto& worker : workers) {
+		worker->update(t_deltaTime, m_testMap.getBuildings(), m_testMap);
+	}
 	m_player.weaponUpdate(t_deltaTime);
 	summonEnemy();
 	m_weather.update(t_deltaTime);
+	m_eventText.update();
 
 	if (m_exitGame) {
 		m_window.close();
@@ -174,15 +191,160 @@ void Game::GameRender()
 	for (auto& enemy : enemies) {
 		enemy->render(m_window);
 	}
+	for (auto& worker : workers) {
+		worker->render(m_window);
+	}
 	m_uiPanel.render(m_window);
 	m_weather.render();
 	m_player.render(m_window);
 	m_player.weaponRender(m_window);
 	m_techTreeMenu.render();
+	m_eventText.render(m_window);
 }
 
-void Game::startMenuInit()
-{
+void Game::startMenuInit() {
 	m_startMenu.addItem("play_button", [&]() { m_gameState = Game::State::Game; });
 	m_startMenu.addItem("exit_button", [&]() { m_window.close(); });
+}
+
+void Game::saveGameData(Player t_player) {
+	m_currentData.buildings_pos.clear();
+	m_currentData.buildings_type.clear();
+	m_currentData.buildings_texture.clear();
+
+	m_currentData.playerPos = t_player.getPos();
+	// building save
+	m_currentData.buildings_size = m_testMap.getBuildings().size();
+	std::cout << m_currentData.buildings_size << std::endl;
+	for (int i = 0; i < m_testMap.getBuildings().size(); i++) {
+		m_currentData.buildings_pos.push_back(m_testMap.getBuildings().at(i)->pos());
+		std::cout << "Saved x: " + std::to_string(m_currentData.buildings_pos[i].x) << std::endl;
+		m_currentData.buildings_type.push_back(tileTypeToString(m_testMap.getTile(worldToTileCoordIndex(m_currentData.buildings_pos[i]))->getType()));
+		m_currentData.buildings_texture.push_back(m_testMap.getBuildings().at(i)->textureName());
+	}
+}
+
+void Game::saveGameDataToFile() const {
+	std::ofstream file(m_fileName);
+	if (file.is_open()) {
+		file << "PlayerPositionX: " << m_currentData.playerPos.x << std::endl;
+		file << "PlayerPositionY: " << m_currentData.playerPos.y << std::endl;
+		// building save
+		file << "BuildingSize: " << m_currentData.buildings_size << std::endl;
+		for (int i = 0; i < m_currentData.buildings_size; i++) {
+			file << "buildings_posX" + std::to_string(i) + ": " << m_currentData.buildings_pos[i].x << std::endl;
+			file << "buildings_posY" + std::to_string(i) + ": " << m_currentData.buildings_pos[i].y << std::endl;
+			file << "buildings_type" + std::to_string(i) + ": " << m_currentData.buildings_type[i] << std::endl;
+			file << "buildings_texture" + std::to_string(i) + ": " << m_currentData.buildings_texture[i] << std::endl;
+		}
+		file.close();
+	}
+	else {
+		std::cerr << "Unable to open file for saving." << std::endl;
+	}
+}
+
+SaveData Game::loadSavedData() {
+	std::ifstream file(m_fileName);
+	SaveData data;
+	std::string line;
+
+	if (file.is_open()) {
+		while (std::getline(file, line)) {
+			std::istringstream iss(line);
+			std::string key;
+			std::getline(iss, key, ':');
+			std::string value;
+			iss >> std::ws;
+			std::getline(iss, value);
+
+			if (key.find("PlayerPositionX") != std::string::npos) {
+				data.playerPos.x = std::stof(value);
+			}
+			else if (key.find("PlayerPositionY") != std::string::npos) {
+				data.playerPos.y = std::stof(value);
+			}
+			// Buildings
+			else {
+				auto underscorePos = key.find_last_of("_");
+				if (underscorePos != std::string::npos) {
+					size_t startIndex = key.find_last_not_of("0123456789") + 1;
+					std::string indexStr = key.substr(startIndex);
+					int index = std::stoi(indexStr);
+					std::string propertyName = key.substr(0, startIndex);
+
+					// Resize vectors if necessary
+					if (propertyName.find("buildings_posX") != std::string::npos) {
+						if (data.buildings_pos.size() <= index) data.buildings_pos.resize(index + 1);
+						data.buildings_pos[index].x = std::stof(value);
+					}
+					else if (propertyName.find("buildings_posY") != std::string::npos) {
+						if (data.buildings_pos.size() <= index) data.buildings_pos.resize(index + 1);
+						data.buildings_pos[index].y = std::stof(value);
+					}
+					else if (propertyName.find("buildings_type") != std::string::npos) {
+						if (data.buildings_type.size() <= index) data.buildings_type.resize(index + 1);
+						data.buildings_type[index] = value;
+					}
+					else if (propertyName.find("buildings_texture") != std::string::npos) {
+						if (data.buildings_texture.size() <= index) data.buildings_texture.resize(index + 1);
+						data.buildings_texture[index] = value;
+					}
+				}
+			}
+		}
+		file.close();
+	}
+	else {
+		std::cerr << "Unable to open file for loading." << std::endl;
+	}
+
+	// Update buildings_size based on loaded data
+	data.buildings_size = data.buildings_pos.size();
+
+	return data;
+}
+
+bool Game::fileExists() {
+	std::ifstream file(m_fileName);
+	return file.good();
+}
+
+std::string Game::tileTypeToString(TileType type) {
+	switch (type) {
+	case TileType::Traversable: return "Traversable";
+	case TileType::NonTraversable: return "NonTraversable";
+	case TileType::House: return "House";
+	case TileType::Factory: return "Factory";
+	case TileType::RecyclingCenter: return "RecyclingCenter";
+	case TileType::Landfill: return "Landfill";
+	case TileType::Plant: return "Plant";
+	case TileType::Wood: return "Wood";
+	case TileType::Tower: return "Tower";
+	case TileType::Connection: return "Connection";
+	}
+}
+
+TileType Game::stringToTileType(std::string& t_string) {
+	static const std::unordered_map<std::string, TileType> stringToType = {
+		{"Traversable", TileType::Traversable},
+		{"NonTraversable", TileType::NonTraversable},
+		{"House", TileType::House},
+		{"Factory", TileType::Factory},
+		{"RecyclingCenter", TileType::RecyclingCenter},
+		{"Landfill", TileType::Landfill},
+		{"Plant", TileType::Plant},
+		{"Wood", TileType::Wood},
+		{"Tower", TileType::Tower},
+		{"Connection", TileType::Connection}
+	};
+
+	auto it = stringToType.find(t_string);
+	if (it != stringToType.end()) {
+		return it->second;
+	}
+	else {
+		std::cerr << "Unknown TileType string: " << t_string << std::endl;
+		return TileType::Traversable;
+	}
 }

@@ -34,11 +34,22 @@ void Player::render(sf::RenderWindow& t_window)
 	animate();
 }
 
+void Player::processEvent(sf::Event& t_event)
+{
+	if (t_event.type == sf::Event::KeyPressed && t_event.key.code == sf::Keyboard::Space && Weapon::Type::heavyLaserGun == m_currentWeapon) {
+		m_heavyLaserGun.restartChargeClock();
+		m_heavyLaserGun.startCharging();
+	}
+	if (t_event.type == sf::Event::KeyReleased && t_event.key.code == sf::Keyboard::Space && Weapon::Type::heavyLaserGun == m_currentWeapon) {
+		m_heavyLaserGun.release(m_position, m_playerDirection);
+	}
+}
+
 bool& Player::movements()
 {
 	m_moving = true;
 	m_previousPosition = m_position;
-	if (!m_laserGun.active()) {
+	if (!m_laserGun.active() && !m_heavyLaserGun.active()) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) // move up
 			|| sf::Keyboard::isKeyPressed(sf::Keyboard::W)) // move up
 		{
@@ -179,6 +190,9 @@ void Player::weaponUpdate(const sf::Time& deltaTime)
 		case Weapon::Type::laserGun:
 			m_laserGun.update(deltaTime);
 			break;
+		case Weapon::Type::heavyLaserGun:
+			m_heavyLaserGun.update(deltaTime);
+			break;
 		default:
 			break;
 	}
@@ -214,6 +228,9 @@ void Player::weaponRender(sf::RenderWindow& t_window)
 			break;
 		case Weapon::Type::laserGun:
 			m_laserGun.render(t_window);
+			break;
+		case Weapon::Type::heavyLaserGun:
+			m_heavyLaserGun.render(t_window);
 			break;
 		default:
 			break;
