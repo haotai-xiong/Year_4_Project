@@ -131,6 +131,7 @@ void Game::summonEnemy()
 {
 	if (m_clock.getElapsedTime().asSeconds() >= summonInterval) {
 		int enemyNumber = wasteAmount / 50;
+		//enemyNumber = 1; // test
 		for (int i = 0; i < enemyNumber; i++) {
 			enemies.push_back(std::make_unique<Enemy>());
 		}

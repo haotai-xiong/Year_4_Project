@@ -1,24 +1,31 @@
 #include "Enemy.h"
 
 void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map, Weather& t_weather) {
-    if (!m_target) {
-        findClosestBuilding(t_buildings);
+    if (alive) {
+        if (!m_target) {
+            findClosestBuilding(t_buildings);
+        }
+        if (m_target && !m_underGravity) {
+            moveToTarget(t_map, t_weather);
+            detectTower(t_map);
+        }
+        else {
+            std::cout << gravityEffectTimer.getElapsedTime().asSeconds() << std::endl;
+            moveToGravityCenter(t_map, t_weather);
+            detectTower(t_map);
+            escapeGravity();
+        }
+        m_healthBar.setPosition(sf::Vector2f(m_sprite.getPosition().x + 20.0f, m_sprite.getPosition().y - 10.0f));
     }
-    if (m_target && !m_underGravity) {
-        moveToTarget(t_map, t_weather);
-        detectTower(t_map);
-    }
-    else {
-        std::cout << gravityEffectTimer.getElapsedTime().asSeconds() << std::endl;
-        moveToGravityCenter(t_map, t_weather);
-        detectTower(t_map);
-        escapeGravity();
+    if (health <= 0) {
+        setAlive(false);
     }
 }
 
 void Enemy::render(sf::RenderWindow& t_window) const {
     if (alive) {
         t_window.draw(m_sprite);
+        t_window.draw(m_healthBar);
     }
 }
 
@@ -40,6 +47,10 @@ void Enemy::findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_
 void Enemy::moveToTarget(TileMap& t_map, Weather& t_weather) {
     sf::Vector2f direction = m_target->pos() - m_sprite.getPosition();
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    if (length < 40.0f) {
+        t_map.setTile(worldToTileCoordIndex(m_target->pos()), TileType::Traversable);
+        m_target = nullptr;
+    }
 
     if (length != 0) {
         direction /= length; // Normalize the direction vector

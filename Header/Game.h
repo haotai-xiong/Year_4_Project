@@ -10,6 +10,7 @@ public:
 
 	enum class State {
 		Menu,
+		Tutorial,
 		Game,
 		Win,
 		Lose
@@ -39,6 +40,14 @@ private:
 	sf::RenderWindow m_window; // main SFML window
 	bool m_exitGame; // control exiting game
 
+	// tutorial game
+	Player m_tutorialPlayer;
+	TileMap m_tutorialMap;
+	UIPanel m_tutorialUIPanel;
+	EventUI m_tutorialEventText;
+	std::vector<std::unique_ptr<Enemy>> m_tutorialEnemies;
+	std::vector<std::unique_ptr<Worker>> m_tutorialWorkers;
+	// main game
 	TileMap m_testMap;
 	UIPanel m_uiPanel;
 	EventUI m_eventText;

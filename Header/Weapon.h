@@ -41,7 +41,8 @@ public:
             bullet.move(velocity * deltaTime.asSeconds());
 
             if (bullet.getPosition().x >= 0 && bullet.getPosition().x <= SCREEN_WIDTH &&
-                bullet.getPosition().y >= 0 && bullet.getPosition().y <= SCREEN_HEIGHT) {
+                bullet.getPosition().y >= 0 && bullet.getPosition().y <= SCREEN_HEIGHT &&
+                velocity != sf::Vector2f(0.0f, 0.0f)) {
                 updatedBullets.push_back(std::make_pair(bullet, velocity));
             }
         }
@@ -62,6 +63,17 @@ public:
             bullets.push_back(std::make_pair(newBullet, direction * speed));
             fireClock.restart();
         }
+    }
+
+    bool checkCollision(sf::Sprite t_sprite, bool t_enemyAlive) {
+        for (auto& [bullet, velocity] : bullets) {
+            if (bullet.getGlobalBounds().intersects(t_sprite.getGlobalBounds()) && t_enemyAlive &&
+                velocity != sf::Vector2f(0.0f, 0.0f)) {
+                velocity = sf::Vector2f(0.0f, 0.0f);
+                return true;
+            }
+        }
+        return false;
     }
 
     int bulletNumber() { return bullets.size(); }
@@ -156,6 +168,7 @@ public:
         }
     }
 
+    sf::RectangleShape& getBeam() { return beam; }
     bool active() const { return m_active; }
 
 private:
@@ -253,7 +266,8 @@ public:
             chargeClockRestarted = true;
         }
     }
-
+    
+    sf::RectangleShape& getLaserBeam() { return laserBeam; }
     bool active() const { return isReleasing; }
 
 private:

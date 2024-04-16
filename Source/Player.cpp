@@ -203,13 +203,25 @@ void Player::weaponInteration(Enemy* t_enemy)
 	switch (m_currentWeapon)
 	{
 	case Weapon::Type::baseGun:
+		if (m_baseGun.checkCollision(t_enemy->getSprite(), t_enemy->getAlive())) {
+			t_enemy->setHealth(t_enemy->getHealth() - 50);
+		}
 		break;
 	case Weapon::Type::gravityGun:
-		if (m_gravityGun.getShape().getGlobalBounds().intersects(t_enemy->getSprite().getGlobalBounds())) {
+		if (m_gravityGun.getShape().getGlobalBounds().intersects(t_enemy->getSprite().getGlobalBounds()) && t_enemy->getAlive()) {
 			t_enemy->inGravity(m_gravityGun.getPosition(), true);
+			t_enemy->setHealth(t_enemy->getHealth() - 2);
 		}
 		break;
 	case Weapon::Type::laserGun:
+		if (m_laserGun.getBeam().getGlobalBounds().intersects(t_enemy->getSprite().getGlobalBounds()) && t_enemy->getAlive() && m_laserGun.active()) {
+			t_enemy->setHealth(t_enemy->getHealth() - 10);
+		}
+		break;
+	case Weapon::Type::heavyLaserGun:
+		if (m_heavyLaserGun.getLaserBeam().getGlobalBounds().intersects(t_enemy->getSprite().getGlobalBounds()) && t_enemy->getAlive() && m_heavyLaserGun.active()) {
+			t_enemy->setHealth(t_enemy->getHealth() - 10);
+		}
 		break;
 	default:
 		break;

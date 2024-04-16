@@ -58,7 +58,7 @@ inline int metalAmount = 0;
 inline int energyAmount = 0;
 inline float wasteAmount = 0.0f;
 inline int prosperity = 300;
-inline float summonInterval = 10.0f;
+inline float summonInterval = 3.0f;
 inline int enemyKilled = 999;
 inline bool haveSavedData = false;
 
