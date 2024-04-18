@@ -33,6 +33,8 @@ private:
 	void MenuRender();
 	void GameUpdate(sf::Time t_deltaTime);
 	void GameRender();
+	void TutorialUpdate(sf::Time t_deltaTime);
+	void TutorialRender();
 
 	void startMenuInit();
 	void summonEnemy();
@@ -45,8 +47,10 @@ private:
 	TileMap m_tutorialMap;
 	UIPanel m_tutorialUIPanel;
 	EventUI m_tutorialEventText;
+	TutorialUI m_tutorialUI;
 	std::vector<std::unique_ptr<Enemy>> m_tutorialEnemies;
 	std::vector<std::unique_ptr<Worker>> m_tutorialWorkers;
+	TechTree m_tutorialTechTreeMenu;
 	// main game
 	TileMap m_testMap;
 	UIPanel m_uiPanel;
@@ -68,7 +72,6 @@ private:
 	void saveGameDataToFile() const;
 	SaveData loadSavedData();
 	bool fileExists();
-
 
 	std::string tileTypeToString(TileType type);
 	TileType stringToTileType(std::string& t_string);

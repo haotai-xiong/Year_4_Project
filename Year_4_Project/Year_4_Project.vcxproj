@@ -148,6 +148,7 @@
     <ClInclude Include="..\Header\Tile.h" />
     <ClInclude Include="..\Header\TileMap.h" />
     <ClInclude Include="..\Header\TileType.h" />
+    <ClInclude Include="..\Header\TutorialUI.h" />
     <ClInclude Include="..\Header\UIPanel.h" />
     <ClInclude Include="..\Header\Weapon.h" />
     <ClInclude Include="..\Header\Weather.h" />

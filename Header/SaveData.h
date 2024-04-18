@@ -10,6 +10,7 @@
 #include "StartMenu.h"
 #include <filesystem>
 #include "EventUI.h"
+#include "TutorialUI.h"
 
 struct SaveData {
 	sf::Vector2f playerPos;

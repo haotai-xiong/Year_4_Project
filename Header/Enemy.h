@@ -19,7 +19,7 @@ public:
         m_healthBar.setOrigin(sf::Vector2f(m_healthBar.getGlobalBounds().width / 2.0f, m_healthBar.getGlobalBounds().height / 2.0f));
     }
 
-    void update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map, Weather& t_weather);
+    void update(const std::vector<std::unique_ptr<Building>>& t_buildings, TileMap& t_map, Weather& t_weather, int& t_playerHealth);
     void render(sf::RenderWindow& t_window) const;
 
     void findClosestBuilding(const std::vector<std::unique_ptr<Building>>& t_buildings);
@@ -49,7 +49,7 @@ private:
     sf::Vector2f m_gravityCenter;
     sf::Clock gravityEffectTimer;
 
-    void moveToTarget(TileMap& t_map, Weather& t_weather);
+    void moveToTarget(TileMap& t_map, Weather& t_weather, int& t_playerHealth);
     void moveToGravityCenter(TileMap& t_map, Weather& t_weather);
     bool rayIntersectsObstacle(const sf::Vector2f& t_direction, float t_distance, TileMap& t_map);
     sf::Vector2f rotateVector(const sf::Vector2f& t_vector, float t_angleDegrees);

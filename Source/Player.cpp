@@ -16,6 +16,11 @@ Player::Player()
 
 	// weapon init
 	setCurrentWeapon(Weapon::Type::baseGun);
+
+	// health bar init
+	m_healthBar.setFillColor(sf::Color(245, 119, 110));
+	m_healthBar.setSize(sf::Vector2f(m_health * 0.4f, 5.0f));
+	m_healthBar.setOrigin(sf::Vector2f(m_healthBar.getGlobalBounds().width / 2.0f, m_healthBar.getGlobalBounds().height / 2.0f));
 }
 
 void Player::update(const sf::Time& deltaTime)
@@ -23,14 +28,15 @@ void Player::update(const sf::Time& deltaTime)
 	if (movements())
 	{
 		boundDetection();
+		m_healthBar.setPosition(sf::Vector2f(m_sprite.getPosition().x - 2.5f, m_sprite.getPosition().y - 20.0f));
 	}
-	// weaponUpdate(deltaTime);
+	m_healthBar.setSize(sf::Vector2f(m_health * 0.4f, 5.0f));
 }
 
 void Player::render(sf::RenderWindow& t_window)
 {
 	t_window.draw(m_sprite);
-	// weaponRender(t_window);
+	t_window.draw(m_healthBar);
 	animate();
 }
 

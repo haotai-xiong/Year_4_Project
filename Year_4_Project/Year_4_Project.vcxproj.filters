@@ -72,6 +72,9 @@
     <ClInclude Include="..\Header\EventUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\TutorialUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Game.cpp">

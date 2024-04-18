@@ -9,6 +9,7 @@ Game::Game() :
 	m_exitGame{false}, //when true game will exit
 	m_weather(m_window),
 	m_techTreeMenu(m_window),
+	m_tutorialTechTreeMenu(m_window),
 	m_gameState(Game::State::Menu)
 {
 	startMenuInit();
@@ -47,16 +48,27 @@ void Game::processEvents() {
 	while (m_window.pollEvent(newEvent)) {
 		// window message 
 		if ( sf::Event::Closed == newEvent.type) {
-			saveGameDataToFile();
+			if (m_gameState == Game::State::Game) {
+				saveGameDataToFile();
+			}
 			m_exitGame = true;
 		}
 		// user pressed a key
 		if (sf::Event::KeyPressed == newEvent.type) {
 			processKeys(newEvent);
 		}
-		m_uiPanel.processEvent(newEvent, m_window, m_testMap, enemies, workers);
-		m_techTreeMenu.update(newEvent, m_player);
-		m_player.processEvent(newEvent);
+		// game state
+		if (m_gameState == Game::State::Game) {
+			m_uiPanel.processEvent(newEvent, m_window, m_testMap, enemies, workers);
+			m_techTreeMenu.update(newEvent, m_player);
+			m_player.processEvent(newEvent);
+		}
+		else if (m_gameState == Game::State::Tutorial) {
+			m_tutorialUIPanel.processEvent(newEvent, m_window, m_testMap, enemies, workers);
+			m_tutorialTechTreeMenu.update(newEvent, m_player);
+			m_tutorialPlayer.processEvent(newEvent);
+			m_tutorialUI.update(newEvent);
+		}
 	}
 }
 
@@ -67,14 +79,16 @@ void Game::processEvents() {
 /// <param name="t_event">key press event</param>
 void Game::processKeys(sf::Event t_event) {
 	if (sf::Keyboard::Escape == t_event.key.code) {
-		saveGameDataToFile();
+		if (m_gameState == Game::State::Game) {
+			saveGameDataToFile();
+		}
 		m_exitGame = true;
 	}
 	else if (sf::Keyboard::C == t_event.key.code) {
 		++eventState;
 		m_eventText.show();
 	}
-	else if (sf::Keyboard::R == t_event.key.code) {
+	else if (sf::Keyboard::R == t_event.key.code && m_gameState == Game::State::Game) {
 		std::filesystem::remove(m_fileName);
 		saveGameData(m_player);
 	}
@@ -89,6 +103,9 @@ void Game::update(sf::Time t_deltaTime) {
 	{
 	case State::Menu:
 		MenuUpdate(t_deltaTime);
+		break;
+	case State::Tutorial:
+		TutorialUpdate(t_deltaTime);
 		break;
 	case State::Game:
 		GameUpdate(t_deltaTime);
@@ -113,6 +130,9 @@ void Game::render() {
 	case State::Menu:
 		MenuRender();
 		break;
+	case State::Tutorial:
+		TutorialRender();
+		break;
 	case State::Game:
 		GameRender();
 		break;
@@ -129,9 +149,16 @@ void Game::render() {
 
 void Game::summonEnemy()
 {
-	if (m_clock.getElapsedTime().asSeconds() >= summonInterval) {
+	if (m_clock.getElapsedTime().asSeconds() >= summonInterval && m_gameState == Game::State::Game) {
 		int enemyNumber = wasteAmount / 50;
 		//enemyNumber = 1; // test
+		for (int i = 0; i < enemyNumber; i++) {
+			enemies.push_back(std::make_unique<Enemy>());
+		}
+		m_clock.restart();
+	}
+	else if (m_clock.getElapsedTime().asSeconds() >= summonInterval && m_gameState == Game::State::Tutorial) {
+		int enemyNumber = 1; // test
 		for (int i = 0; i < enemyNumber; i++) {
 			enemies.push_back(std::make_unique<Enemy>());
 		}
@@ -170,7 +197,7 @@ void Game::GameUpdate(sf::Time t_deltaTime)
 	m_uiPanel.update(m_window);
 	m_testMap.update(m_weather);
 	for (auto& enemy : enemies) {
-		enemy->update(m_testMap.getBuildings(), m_testMap, m_weather);
+		enemy->update(m_testMap.getBuildings(), m_testMap, m_weather, m_player.getHealth());
 		m_player.weaponInteration(enemy.get());
 	}
 	for (auto& worker : workers) {
@@ -186,8 +213,7 @@ void Game::GameUpdate(sf::Time t_deltaTime)
 	}
 }
 
-void Game::GameRender()
-{
+void Game::GameRender() {
 	m_testMap.render(m_window);
 	for (auto& enemy : enemies) {
 		enemy->render(m_window);
@@ -203,8 +229,51 @@ void Game::GameRender()
 	m_eventText.render(m_window);
 }
 
+void Game::TutorialUpdate(sf::Time t_deltaTime) {
+	if (m_tutorialUI.getGoToMainGame())
+	{
+		m_gameState = Game::State::Game;
+	}
+
+	m_tutorialPlayer.update(t_deltaTime);
+	m_tutorialUIPanel.update(m_window);
+	m_tutorialMap.update(m_weather);
+	for (auto& enemy : m_tutorialEnemies) {
+		enemy->update(m_testMap.getBuildings(), m_testMap, m_weather, m_player.getHealth());
+		m_tutorialPlayer.weaponInteration(enemy.get());
+	}
+	for (auto& worker : m_tutorialWorkers) {
+		worker->update(t_deltaTime, m_testMap.getBuildings(), m_testMap);
+	}
+	m_tutorialPlayer.weaponUpdate(t_deltaTime);
+	summonEnemy();
+	m_weather.update(t_deltaTime);
+	m_eventText.update();
+
+	if (m_exitGame) {
+		m_window.close();
+	}
+}
+
+void Game::TutorialRender() {
+	m_tutorialMap.render(m_window);
+	for (auto& enemy : m_tutorialEnemies) {
+		enemy->render(m_window);
+	}
+	for (auto& worker : m_tutorialWorkers) {
+		worker->render(m_window);
+	}
+	m_tutorialUIPanel.render(m_window);
+	m_weather.render();
+	m_tutorialPlayer.render(m_window);
+	m_tutorialPlayer.weaponRender(m_window);
+	m_tutorialTechTreeMenu.render();
+	m_eventText.render(m_window);
+	m_tutorialUI.render(m_window);
+}
+
 void Game::startMenuInit() {
-	m_startMenu.addItem("play_button", [&]() { m_gameState = Game::State::Game; });
+	m_startMenu.addItem("play_button", [&]() { m_gameState = Game::State::Tutorial; });
 	m_startMenu.addItem("exit_button", [&]() { m_window.close(); });
 }
 

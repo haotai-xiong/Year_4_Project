@@ -21,7 +21,8 @@ private:
 	int m_currentYFrame{ 0 };
 
 	// gameplay attributes
-	int m_health = 10;
+	sf::RectangleShape m_healthBar;
+	int m_health = 100;
 	bool m_alive = true;
 	bool m_moving = false;
 	bool m_shooting = false;
