@@ -65,7 +65,7 @@ void Game::processEvents() {
 		}
 		else if (m_gameState == Game::State::Tutorial) {
 			m_tutorialUIPanel.processEvent(newEvent, m_window, m_testMap, enemies, workers);
-			m_tutorialTechTreeMenu.update(newEvent, m_player);
+			m_tutorialTechTreeMenu.update(newEvent, m_tutorialPlayer);
 			m_tutorialPlayer.processEvent(newEvent);
 			m_tutorialUI.update(newEvent);
 		}

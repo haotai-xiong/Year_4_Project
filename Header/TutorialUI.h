@@ -48,11 +48,13 @@ public:
         goToMainGameText.setFillColor(sf::Color::Black);
 
         // vector string init
-        instructions.push_back("1");
-        instructions.push_back("2");
-        instructions.push_back("3");
-        instructions.push_back("4");
-        instructions.push_back("5");
+        instructions.push_back("WELCOME TO MY GAME\nECOSYNTH!\nIN HERE YOU WILL\nEXPERIENCE WITH\nCOOLEST FEATURES EVER!");
+        instructions.push_back("THE GOAL IS BUILDING AND\nPROTECTING YOUR\nBUILDINGS AT THE SAME TIME");
+        instructions.push_back("Press WASD for movement\nSpace for shooting\nUse Left Mouse Click\nTo interact with UI");
+        instructions.push_back("I have several basic menu here");
+        instructions.push_back("On the top of the screen is where\nYou find the resource you hold");
+        instructions.push_back("On the right top of the screen is\nTECHTREE for weapons\nYou can upgrade the weapon\nWhen you reach the requirements");
+        instructions.push_back("On the right of the screen is\nWhere you buy the buildings\nLeft Click to choose\nThen Left click the map to build");
 
         // Initialize with default text if needed
         if (!instructions.empty()) {
@@ -94,6 +96,7 @@ public:
         if (!instructions.empty()) {
             currentIndex = (currentIndex + 1) % instructions.size();
             text.setString(instructions[currentIndex]);
+            text.setOrigin(sf::Vector2f(text.getGlobalBounds().width / 2.0f, text.getGlobalBounds().height / 2.0f));
         }
     }
 
