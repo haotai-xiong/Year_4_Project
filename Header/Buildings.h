@@ -188,16 +188,19 @@ public:
     }
 
     void drawEmit(sf::RenderWindow& t_window) {
-        m_emitter.setRadius(m_radius);
-        m_emitter.setOrigin(m_radius, m_radius);
-        m_emitter.setPosition(sf::Vector2f(m_pos.x + 20.0f, m_pos.y + 20.0f));
-        t_window.draw(m_emitter);
+        if (energyAmount >= 50) {
+            m_emitter.setRadius(m_radius);
+            m_emitter.setOrigin(m_radius, m_radius);
+            m_emitter.setPosition(sf::Vector2f(m_pos.x + 20.0f, m_pos.y + 20.0f));
+            t_window.draw(m_emitter);
 
-        m_radius += growthRate;
+            m_radius += growthRate;
 
-        if (m_radius >= m_MAXRADIUS)
-        {
-            m_radius = 1.0f;
+            if (m_radius >= m_MAXRADIUS)
+            {
+                m_radius = 1.0f;
+                energyAmount -= 50;
+            }
         }
     }
 

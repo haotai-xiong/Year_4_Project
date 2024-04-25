@@ -157,10 +157,10 @@ void Game::summonEnemy()
 		}
 		m_clock.restart();
 	}
-	else if (m_clock.getElapsedTime().asSeconds() >= summonInterval && m_gameState == Game::State::Tutorial) {
+	else if (m_clock.getElapsedTime().asSeconds() >= 10.0f && m_gameState == Game::State::Tutorial) {
 		int enemyNumber = 1; // test
 		for (int i = 0; i < enemyNumber; i++) {
-			enemies.push_back(std::make_unique<Enemy>());
+			m_tutorialEnemies.push_back(std::make_unique<Enemy>());
 		}
 		m_clock.restart();
 	}
@@ -233,16 +233,18 @@ void Game::TutorialUpdate(sf::Time t_deltaTime) {
 	if (m_tutorialUI.getGoToMainGame())
 	{
 		m_gameState = Game::State::Game;
+		m_testMap.buildingInit();
+		workers.clear();
 	}
 
 	m_tutorialPlayer.update(t_deltaTime);
 	m_tutorialUIPanel.update(m_window);
-	m_tutorialMap.update(m_weather);
+	m_testMap.update(m_weather);
 	for (auto& enemy : m_tutorialEnemies) {
 		enemy->update(m_testMap.getBuildings(), m_testMap, m_weather, m_player.getHealth());
 		m_tutorialPlayer.weaponInteration(enemy.get());
 	}
-	for (auto& worker : m_tutorialWorkers) {
+	for (auto& worker : workers) {
 		worker->update(t_deltaTime, m_testMap.getBuildings(), m_testMap);
 	}
 	m_tutorialPlayer.weaponUpdate(t_deltaTime);
@@ -256,11 +258,11 @@ void Game::TutorialUpdate(sf::Time t_deltaTime) {
 }
 
 void Game::TutorialRender() {
-	m_tutorialMap.render(m_window);
+	m_testMap.render(m_window);
 	for (auto& enemy : m_tutorialEnemies) {
 		enemy->render(m_window);
 	}
-	for (auto& worker : m_tutorialWorkers) {
+	for (auto& worker : workers) {
 		worker->render(m_window);
 	}
 	m_tutorialUIPanel.render(m_window);
@@ -416,5 +418,14 @@ TileType Game::stringToTileType(std::string& t_string) {
 	else {
 		std::cerr << "Unknown TileType string: " << t_string << std::endl;
 		return TileType::Traversable;
+	}
+}
+
+void Game::winOrLose() {
+	if (m_player.getHealth() <= 0) {
+		m_gameState = Game::State::Lose;
+	}
+	else if (enemyKilled > 1100) {
+		m_gameState = Game::State::Win;
 	}
 }

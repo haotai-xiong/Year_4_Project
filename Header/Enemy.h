@@ -41,10 +41,11 @@ private:
     sf::Sprite m_sprite;
     Building* m_target;
     sf::RectangleShape m_healthBar;
-    float m_speed = 0.5f;
+    float m_speed = 0.25f;
     float m_viewDistance = 75.0f;
     int health = 100;
     bool alive = true;
+    bool inTowerRange = false;
     bool m_underGravity = false;
     sf::Vector2f m_gravityCenter;
     sf::Clock gravityEffectTimer;

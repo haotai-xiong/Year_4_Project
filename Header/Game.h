@@ -39,6 +39,8 @@ private:
 	void startMenuInit();
 	void summonEnemy();
 
+	void winOrLose();
+
 	sf::RenderWindow m_window; // main SFML window
 	bool m_exitGame; // control exiting game
 

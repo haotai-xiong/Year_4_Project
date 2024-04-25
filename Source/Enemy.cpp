@@ -117,15 +117,21 @@ void Enemy::moveToGravityCenter(TileMap& t_map, Weather& t_weather)
                 if (pathFound) break;
             }
         }
-
+        float speedCoefficient = 1.0f;
         // Move in the chosen direction
-        // if (t_weather.getCurrentWeather() == Weather::Type::Rainy) {
         if (eventState == Event::EnemyRaging) {
-            m_sprite.move(direction * m_speed * 2.0f);
+            speedCoefficient += 2.0f;
         }
-        else {
-            m_sprite.move(direction * m_speed);
+        else if (eventState == Event::Rainy) {
+            speedCoefficient -= 0.5f;
         }
+        if (inTowerRange) {
+            speedCoefficient -= 0.5f;
+        }
+        if (speedCoefficient <= 0.1f) {
+            speedCoefficient = 0.25f;
+        }
+        m_sprite.move(direction * m_speed);
     }
 }
 
@@ -158,7 +164,10 @@ void Enemy::detectTower(TileMap& t_map)
     for (auto& building : t_map.getBuildings()) {
         auto* tower = dynamic_cast<Tower*>(building.get());
         if (tower && distance(tower->pos(), m_sprite.getPosition()) < tower->MAXRADIUS()) {
-            alive = false;
+            inTowerRange = true;
+        }
+        else {
+            inTowerRange = false;
         }
     }
 }

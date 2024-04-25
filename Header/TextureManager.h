@@ -32,7 +32,7 @@ public:
         loadTexture("Worker_Sample", "../Assets/Project/Character/worker_sample.png");
         // fonts
         loadFont("cheril", "../Assets/Project/Font/CHERL.TTF");
-        loadFont("cherii", "../Assets/Project/Font/CHERI.TTF");
+        loadFont("cherii", "../Assets/Project/Font/Nunito-Bold.ttf");
         // menu
         loadTexture("menu_background", "../Assets/Project/Menu/background.png");
         loadTexture("play_button", "../Assets/Project/Menu/play.png");

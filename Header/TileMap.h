@@ -12,6 +12,7 @@ public:
 	void setTile(sf::Vector2i t_pos, TileType t_type);
 	void render(sf::RenderWindow& t_window);
     void update(Weather& t_weather);
+    void buildingInit() { m_buildings.clear(); }
     
     template<typename T>
     void addBuilding(const sf::Vector2f t_pos, TileType tileType, const std::string textureName) {
