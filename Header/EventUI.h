@@ -19,9 +19,9 @@ public:
             }
 
             float time = fmod(elapsedTime, fadeDuration) / fadeDuration;
-            sf::Uint8 red = static_cast<sf::Uint8>((sin(time * 2 * std::_Pi_val) * 0.5 + 0.5) * 255);
-            sf::Uint8 green = static_cast<sf::Uint8>((sin(time * 2 * std::_Pi_val + 2 * std::_Pi_val / 3) * 0.5 + 0.5) * 255);
-            sf::Uint8 blue = static_cast<sf::Uint8>((sin(time * 2 * std::_Pi_val + 4 * std::_Pi_val / 3) * 0.5 + 0.5) * 255);
+            sf::Uint8 red = static_cast<sf::Uint8>((sin(time * 2 * 3.1415926) * 0.5 + 0.5) * 255);
+            sf::Uint8 green = static_cast<sf::Uint8>((sin(time * 2 * 3.1415926 + 2 * 3.1415926 / 3) * 0.5 + 0.5) * 255);
+            sf::Uint8 blue = static_cast<sf::Uint8>((sin(time * 2 * 3.1415926 + 4 * 3.1415926 / 3) * 0.5 + 0.5) * 255);
             text.setFillColor(sf::Color(red, green, blue, static_cast<sf::Uint8>(alpha)));
         }
     }

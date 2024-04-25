@@ -111,8 +111,12 @@ void Game::update(sf::Time t_deltaTime) {
 		GameUpdate(t_deltaTime);
 		break;
 	case State::Win:
+		endScreenText.setFont(m_textureManager.getFont("cherii"));
+		endScreenText.setString("YOU WON!");
 		break;
 	case State::Lose:
+		endScreenText.setFont(m_textureManager.getFont("cherii"));
+		endScreenText.setString("YOU LOST!");
 		break;
 	default:
 		break;
@@ -137,8 +141,10 @@ void Game::render() {
 		GameRender();
 		break;
 	case State::Win:
+		m_window.draw(endScreenText);
 		break;
 	case State::Lose:
+		m_window.draw(endScreenText);
 		break;
 	default:
 		break;
@@ -207,6 +213,7 @@ void Game::GameUpdate(sf::Time t_deltaTime)
 	summonEnemy();
 	m_weather.update(t_deltaTime);
 	m_eventText.update();
+	winOrLose();
 
 	if (m_exitGame) {
 		m_window.close();
@@ -235,6 +242,7 @@ void Game::TutorialUpdate(sf::Time t_deltaTime) {
 		m_gameState = Game::State::Game;
 		m_testMap.buildingInit();
 		workers.clear();
+		enemies.clear();
 	}
 
 	m_tutorialPlayer.update(t_deltaTime);

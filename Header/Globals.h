@@ -81,5 +81,6 @@ inline Event& operator++(Event& t_event) {
 }
 
 inline Event eventState = Event::None;
+inline sf::Text endScreenText;
 
 #endif // !GLOBALS_HPP
