@@ -92,6 +92,9 @@ void Game::processKeys(sf::Event t_event) {
 		std::filesystem::remove(m_fileName);
 		saveGameData(m_player);
 	}
+	else if (sf::Keyboard::Num1 == t_event.key.code && m_gameState == Game::State::Game) {
+		m_gameState = Game::State::Win;
+	}
 }
 
 /// <summary>
@@ -113,10 +116,16 @@ void Game::update(sf::Time t_deltaTime) {
 	case State::Win:
 		endScreenText.setFont(m_textureManager.getFont("cherii"));
 		endScreenText.setString("YOU WON!");
+		endScreenText.setCharacterSize(100.0f);
+		endScreenText.setOrigin(sf::Vector2f(endScreenText.getGlobalBounds().width / 2.0f, endScreenText.getGlobalBounds().height / 2.0f));
+		endScreenText.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f));
 		break;
 	case State::Lose:
 		endScreenText.setFont(m_textureManager.getFont("cherii"));
 		endScreenText.setString("YOU LOST!");
+		endScreenText.setCharacterSize(100.0f);
+		endScreenText.setOrigin(sf::Vector2f(endScreenText.getGlobalBounds().width / 2.0f, endScreenText.getGlobalBounds().height / 2.0f));
+		endScreenText.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f));
 		break;
 	default:
 		break;
