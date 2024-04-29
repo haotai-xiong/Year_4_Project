@@ -10,7 +10,6 @@ void Enemy::update(const std::vector<std::unique_ptr<Building>>& t_buildings, Ti
             detectTower(t_map);
         }
         else {
-            // std::cout << gravityEffectTimer.getElapsedTime().asSeconds() << std::endl;
             moveToGravityCenter(t_map, t_weather);
             detectTower(t_map);
             escapeGravity();
